@@ -27,6 +27,8 @@ const Header = () => {
         }
         className="object-cover"
       />
+            <div className="relative">
+
       <button
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
             className="text-gray-600 focus:outline-none border p-1"
