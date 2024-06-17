@@ -27,13 +27,13 @@ const Header = () => {
         }
         className="object-cover"
       />
-      <div className="relative">
-        <button
-          onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-          className="text-gray-600 focus:outline-none"
-        >
-          <i className="bi bi-person-circle text-xl"></i>
-        </button>
+      <button
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            className="text-gray-600 focus:outline-none border p-1"
+          >
+            <span className="text-xs pe-1">{decoded.user_Name}</span>
+            <i className="bi bi-person-circle text-xl"></i>
+          </button>
 
         {isDropdownOpen && (
           <div className="absolute right-0 mt-2 w-40 bg-white border rounded shadow">
