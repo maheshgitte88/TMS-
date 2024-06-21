@@ -6,7 +6,7 @@ export const createTicket = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        "https://13.235.240.117:2000/api/create-ticket",
+        "https://tmsfinalserver.onrender.com/api/create-ticket",
         data
       );
       const result = response.data.ticket;
@@ -23,7 +23,7 @@ export const getUserCreatedTicket = createAsyncThunk(
   async ({ user_id }, { rejectWithValue }) => {
     try {
       const res = await axios.get(
-        `https://13.235.240.117:2000/api/tickets/${user_id}`
+        `https://tmsfinalserver.onrender.com/api/tickets/${user_id}`
       );
       const resData = res.data.tickets;
       return resData;
@@ -38,7 +38,7 @@ export const updatesTickets = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        "https://13.235.240.117:2000/api/update-ticket",
+        "https://tmsfinalserver.onrender.com/api/update-ticket",
         data
       );
       const result = response.data;
@@ -54,7 +54,7 @@ export const fetchClosedTickets = createAsyncThunk(
   async ({ user_id }, { rejectWithValue }) => {
     try {
       const res = await axios.get(
-        `https://13.235.240.117:2000/api/Closed/tickets/${user_id}`
+        `https://tmsfinalserver.onrender.com/api/Closed/tickets/${user_id}`
       );
       const resData = res.data.tickets;
       return resData;
@@ -69,7 +69,7 @@ export const fetchResolvedTickets = createAsyncThunk(
   async ({ user_id }, { rejectWithValue }) => {
     try {
       const res = await axios.get(
-        `https://13.235.240.117:2000/api/resolved/tickets/${user_id}`
+        `https://tmsfinalserver.onrender.com/api/resolved/tickets/${user_id}`
       );
       const resData = res.data.tickets;
       return resData;

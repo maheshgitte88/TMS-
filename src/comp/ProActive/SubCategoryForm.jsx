@@ -7,7 +7,7 @@ const SubCategoryForm = () => {
   const [selectedCategoryId, setSelectedCategoryId] = useState('');
 
   useEffect(() => {
-    axios.get('https://13.235.240.117:2000/api/categories')
+    axios.get('https://tmsfinalserver.onrender.com/api/categories')
       .then(response => {
         setCategories(response.data);
       })
@@ -18,7 +18,7 @@ const SubCategoryForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post('https://13.235.240.117:2000/api/subcategories', {
+    axios.post('https://tmsfinalserver.onrender.com/api/subcategories', {
       SubCategoryName: subCategoryName,
       CategoryId: selectedCategoryId
     })

@@ -6,7 +6,7 @@ import axios from "axios";
 //     "QueryCatSubHierarchyData",
 //     async (args, { rejectWithValue }) => {
 //         try {
-//             const res = await axios.get(`https://13.235.240.117:2000/get-query-hierarchy`);
+//             const res = await axios.get(`https://tmsfinalserver.onrender.com/get-query-hierarchy`);
 //             const resData = res.data;
 //             return resData;
 //         } catch (error) {
@@ -19,7 +19,7 @@ export const DepSubHierachy = createAsyncThunk(
     "DepSubHierachy",
     async (args, { rejectWithValue }) => {
         try {
-            const res = await axios.get(`https://13.235.240.117:2000/api/dep-sub-hierarchy`);
+            const res = await axios.get(`https://tmsfinalserver.onrender.com/api/dep-sub-hierarchy`);
             const resData = res.data.departments;
             console.log(resData, 24)
             return resData;
