@@ -18,7 +18,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "https://tmsfinalserver.onrender.com/api/login",
+        "https://13.235.240.117:2000/api/login",
         {
           email,
           password,

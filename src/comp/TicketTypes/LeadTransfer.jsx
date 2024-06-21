@@ -16,7 +16,7 @@ import { toast } from "react-toastify";
 import LoadingSpinner from "../LoadingSpinner";
 
 function LeadTransfer() {
-  const socket = useMemo(() => io("https://tmsfinalserver.onrender.com"), []);
+  const socket = useMemo(() => io("https://13.235.240.117:2000"), []);
 
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [showForm, setShowForm] = useState(false);
@@ -86,7 +86,7 @@ function LeadTransfer() {
     const fetchQueryData = async () => {
       try {
         const response = await axios.get(
-          "https://tmsfinalserver.onrender.com/api/mis-hierarchy"
+          "https://13.235.240.117:2000/api/mis-hierarchy"
         );
         setQueryCategories(response.data);
       } catch (error) {
@@ -105,7 +105,7 @@ function LeadTransfer() {
         console.log(decoded, 19);
 
         const response = await axios.get(
-          "https://tmsfinalserver.onrender.com/api/all-hierarchy"
+          "https://13.235.240.117:2000/api/all-hierarchy"
         );
         const resData = response.data;
         console.log(resData, 110);
@@ -132,7 +132,7 @@ function LeadTransfer() {
     const fetchAttendees = async () => {
       try {
         const response = await axios.get(
-          "https://tmsfinalserver.onrender.com/api/allEmployess"
+          "https://13.235.240.117:2000/api/allEmployess"
         );
         const employees = response.data.Employees.map(
           (employee) => employee.user_Email
@@ -209,7 +209,7 @@ function LeadTransfer() {
           formData.append("files", file);
 
           const response = await axios.post(
-            "https://tmsfinalserver.onrender.com/api/img-save",
+            "https://13.235.240.117:2000/api/img-save",
             formData,
             {
               headers: {

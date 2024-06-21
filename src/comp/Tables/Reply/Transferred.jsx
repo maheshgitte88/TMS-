@@ -11,7 +11,7 @@ import axios from "axios";
 import { io } from "socket.io-client";
 
 function Transferred({ TicketData, setSelectedTicket }) {
-  const socket = useMemo(() => io("https://tmsfinalserver.onrender.com"), []);
+  const socket = useMemo(() => io("https://13.235.240.117:2000"), []);
 
   const [attchedfiles, setAttchedfiles] = useState(null);
   const [description, setDescription] = useState("");
@@ -65,7 +65,7 @@ function Transferred({ TicketData, setSelectedTicket }) {
           formData.append("files", file);
 
           const response = await axios.post(
-            "https://tmsfinalserver.onrender.com/api/img-save",
+            "https://13.235.240.117:2000/api/img-save",
             formData,
             {
               headers: {

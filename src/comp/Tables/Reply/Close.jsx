@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import { io } from "socket.io-client";
 
 function Close({ TicketData }) {
-  const socket = useMemo(() => io("https://tmsfinalserver.onrender.com"), []);
+  const socket = useMemo(() => io("https://13.235.240.117:2000"), []);
 
   const [attchedfiles, setAttchedfiles] = useState(null);
   const [description, setDescription] = useState("");
@@ -34,7 +34,7 @@ function Close({ TicketData }) {
           formData.append("files", file);
 
           const response = await axios.post(
-            "https://tmsfinalserver.onrender.com/api/img-save",
+            "https://13.235.240.117:2000/api/img-save",
             formData,
             {
               headers: {

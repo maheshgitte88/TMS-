@@ -8,7 +8,7 @@ const CategoryForm = () => {
   const [selectedCategoryId, setSelectedCategoryId] = useState('');
 
   useEffect(() => {
-    axios.get('https://tmsfinalserver.onrender.com/api/categories')
+    axios.get('https://13.235.240.117:2000/api/categories')
       .then(response => {
         setCategories(response.data);
       })
@@ -19,7 +19,7 @@ const CategoryForm = () => {
 
   const handleSubCSubmit = (e) => {
     e.preventDefault();
-    axios.post('https://tmsfinalserver.onrender.com/api/subcategories', {
+    axios.post('https://13.235.240.117:2000/api/subcategories', {
       SubCategoryName: subCategoryName,
       CategoryId: selectedCategoryId
     })
@@ -36,7 +36,7 @@ const CategoryForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post('https://tmsfinalserver.onrender.com/api/categories', { CategoryName: categoryName })
+    axios.post('https://13.235.240.117:2000/api/categories', { CategoryName: categoryName })
       .then(response => {
         console.log(response.data);
         setCategoryName('');

@@ -31,12 +31,12 @@ const WorkDetailForm = () => {
 
   useEffect(() => {
     axios
-      .get("https://tmsfinalserver.onrender.com/api/departments")
+      .get("https://13.235.240.117:2000/api/departments")
       .then((response) => setDepartments(response.data))
       .catch((error) => console.error(error));
 
     axios
-      .get("https://tmsfinalserver.onrender.com/api/categories")
+      .get("https://13.235.240.117:2000/api/categories")
       .then((response) => setCategories(response.data))
       .catch((error) => console.error(error));
   }, []);
@@ -44,7 +44,7 @@ const WorkDetailForm = () => {
   useEffect(() => {
     if (formData.CategoryId) {
       axios
-        .get(`https://tmsfinalserver.onrender.com/api/subcategories/${formData.CategoryId}`)
+        .get(`https://13.235.240.117:2000/api/subcategories/${formData.CategoryId}`)
         .then((response) => setSubCategories(response.data))
         .catch((error) => console.error(error));
     }
@@ -60,7 +60,7 @@ const WorkDetailForm = () => {
     setLoading(true);
     try {
       axios
-        .post("https://tmsfinalserver.onrender.com/api/workdetails", formData)
+        .post("https://13.235.240.117:2000/api/workdetails", formData)
         .then((response) => {
           console.log(response.data);
           toast.success("Pro-Active Work Add successfully..!");

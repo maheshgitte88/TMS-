@@ -31,7 +31,7 @@ const FeedbackForm = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "https://tmsfinalserver.onrender.com/api/feedback",
+        "https://13.235.240.117:2000/api/feedback",
         formData
       );
       console.log(response.data);
