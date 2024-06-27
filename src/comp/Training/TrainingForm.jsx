@@ -39,7 +39,7 @@ const TrainingForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("https://13.235.240.117:2000/api/trainings", formData)
+      .post("http://13.235.240.117:2000/api/trainings", formData)
       .then((response) => {
         console.log(response.data);
         toast.success("Training Feedback mails successfully..!");
@@ -54,7 +54,7 @@ const TrainingForm = () => {
     const fetchAttendees = async () => {
       try {
         const response = await axios.get(
-          "https://13.235.240.117:2000/api/allEmployess"
+          "http://13.235.240.117:2000/api/allEmployess"
         );
         const employees = response.data.Employees.map(
           (employee) => employee.user_Email
@@ -69,7 +69,7 @@ const TrainingForm = () => {
     const fetchTrainings = async () => {
       try {
         const response = await axios.get(
-          `https://13.235.240.117:2000/api/gettrainings/${decoded.user_id}`
+          `http://13.235.240.117:2000/api/gettrainings/${decoded.user_id}`
         );
         setTrainings(response.data);
       } catch (error) {

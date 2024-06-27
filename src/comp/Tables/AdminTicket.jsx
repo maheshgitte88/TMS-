@@ -25,7 +25,7 @@ import { toast } from "react-toastify";
 // import axios from "axios";
 
 function AdminTicket() {
-  const socket = useMemo(() => io("https://13.235.240.117:2000"), []);
+  const socket = useMemo(() => io("http://13.235.240.117:2000"), []);
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -193,7 +193,7 @@ function AdminTicket() {
 
       notification.onclick = () => {
         // console.log("Notification clicked");
-        const ticketDetailsURL = `https://13.235.240.117:5173/admin/home`;
+        const ticketDetailsURL = `http://13.235.240.117:5173/admin/home`;
         window.location.href = ticketDetailsURL;
       };
     }
@@ -219,7 +219,7 @@ function AdminTicket() {
 
   const handleClaimTicket = async (ticketId) => {
     try {
-      // await axios.post(`https://13.235.240.117:2000/api/claim-ticket/${ticketId}`, {
+      // await axios.post(`http://13.235.240.117:2000/api/claim-ticket/${ticketId}`, {
       //   claim_User_Id: userInfo.user_id
       // });
       const formDataToSend = {
@@ -290,7 +290,7 @@ function AdminTicket() {
   const fetchClosedTickets = async () => {
     try {
       const response = await axios.get(
-        `https://13.235.240.117:2000/api/emp-ticket/Closed/${decoded.user_id}`
+        `http://13.235.240.117:2000/api/emp-ticket/Closed/${decoded.user_id}`
       );
       setClosedTickets(response.data.tickets);
       setActiveTab("closed");
@@ -302,7 +302,7 @@ function AdminTicket() {
   const fetchResolvedTickets = async () => {
     try {
       const response = await axios.get(
-        `https://13.235.240.117:2000/api/emp-ticket/resolved/${decoded.user_id}`
+        `http://13.235.240.117:2000/api/emp-ticket/resolved/${decoded.user_id}`
       );
       setResolvedTickets(response.data.tickets);
       setActiveTab("resolved");

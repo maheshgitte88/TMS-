@@ -27,7 +27,7 @@ import moment from "moment";
 import { toast } from "react-toastify";
 
 function DepartmentsTickets() {
-  const socket = useMemo(() => io("https://13.235.240.117:2000"), []);
+  const socket = useMemo(() => io("http://13.235.240.117:2000"), []);
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [closedTickets, setClosedTickets] = useState([]);
   const [resolvedTickets, setResolvedTickets] = useState([]);
@@ -210,7 +210,7 @@ function DepartmentsTickets() {
 
       notification.onclick = () => {
         // console.log("Notification clicked");
-        const ticketDetailsURL = `https://13.235.240.117:5173/admin/home`;
+        const ticketDetailsURL = `http://13.235.240.117:5173/admin/home`;
         window.location.href = ticketDetailsURL;
       };
     }
@@ -234,7 +234,7 @@ function DepartmentsTickets() {
 
   const handleClaimTicket = async (ticketId) => {
     try {
-      // await axios.post(`https://13.235.240.117:2000/api/claim-ticket/${ticketId}`, {
+      // await axios.post(`http://13.235.240.117:2000/api/claim-ticket/${ticketId}`, {
       //   claim_User_Id: userInfo.user_id
       // });
       const formDataToSend = {
@@ -254,7 +254,7 @@ function DepartmentsTickets() {
 
   const handleTransferdClaimTicket = async (ticketId) => {
     try {
-      // await axios.post(`https://13.235.240.117:2000/api/claim-ticket/${ticketId}`, {
+      // await axios.post(`http://13.235.240.117:2000/api/claim-ticket/${ticketId}`, {
       //   claim_User_Id: userInfo.user_id
       // });
       const formDataToSend = {
@@ -312,7 +312,7 @@ function DepartmentsTickets() {
   const fetchClosedTickets = async () => {
     try {
       const response = await axios.get(
-        `https://13.235.240.117:2000/api/emp-ticket/Closed/${decoded.user_id}`
+        `http://13.235.240.117:2000/api/emp-ticket/Closed/${decoded.user_id}`
       );
       setClosedTickets(response.data.tickets);
       setActiveTab("closed");
@@ -324,7 +324,7 @@ function DepartmentsTickets() {
   const fetchResolvedTickets = async () => {
     try {
       const response = await axios.get(
-        `https://13.235.240.117:2000/api/emp-ticket/resolved/${decoded.user_id}`
+        `http://13.235.240.117:2000/api/emp-ticket/resolved/${decoded.user_id}`
       );
       setResolvedTickets(response.data.tickets);
       setActiveTab("resolved");

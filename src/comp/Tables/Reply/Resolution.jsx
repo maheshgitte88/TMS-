@@ -12,7 +12,7 @@ import { DepSubHierachy } from "../../../reduxToolkit/features/QueryDataSlices";
 import { toast } from "react-toastify";
 import axios from "axios";
 function Resolution({ TicketData , setSelectedTicket }) {
-  const socket = useMemo(() => io("https://13.235.240.117:2000"), []);
+  const socket = useMemo(() => io("http://13.235.240.117:2000"), []);
 
   const [attchedfiles, setAttchedfiles] = useState(null);
   const [description, setDescription] = useState("");
@@ -85,7 +85,7 @@ function Resolution({ TicketData , setSelectedTicket }) {
           formData.append("files", file);
 
           const response = await axios.post(
-            "https://13.235.240.117:2000/api/img-save",
+            "http://13.235.240.117:2000/api/img-save",
             formData,
             {
               headers: {
@@ -203,7 +203,7 @@ function Resolution({ TicketData , setSelectedTicket }) {
     const fetchAttendees = async () => {
       try {
         const response = await axios.get(
-          "https://13.235.240.117:2000/api/allEmployess"
+          "http://13.235.240.117:2000/api/allEmployess"
         );
         const employees = response.data.Employees.map(
           (employee) => employee.user_Email

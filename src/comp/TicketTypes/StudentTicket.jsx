@@ -19,7 +19,7 @@ import { toast } from "react-toastify";
 const currentTime = new Date();
 const currentDay = new Date();
 function StudentTicket() {
-  const socket = useMemo(() => io("https://13.235.240.117:2000"), []);
+  const socket = useMemo(() => io("http://13.235.240.117:2000"), []);
 
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [showForm, setShowForm] = useState(false);
@@ -94,7 +94,7 @@ function StudentTicket() {
           formData.append("files", file);
 
           const response = await axios.post(
-            "https://13.235.240.117:2000/api/img-save",
+            "http://13.235.240.117:2000/api/img-save",
             formData,
             {
               headers: {
