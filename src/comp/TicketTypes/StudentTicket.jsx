@@ -1,5 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { serverurl } from "../../exportapp";
+
 import {
   fetchClosedTickets,
   fetchResolvedTickets,
@@ -19,7 +21,7 @@ import { toast } from "react-toastify";
 const currentTime = new Date();
 const currentDay = new Date();
 function StudentTicket() {
-  const socket = useMemo(() => io("http://13.235.240.117:2000"), []);
+  const socket = useMemo(() => io(`${serverurl}`), []);
 
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [showForm, setShowForm] = useState(false);
@@ -94,7 +96,7 @@ function StudentTicket() {
           formData.append("files", file);
 
           const response = await axios.post(
-            "http://13.235.240.117:2000/api/img-save",
+            `${serverurl}/api/img-save`,
             formData,
             {
               headers: {

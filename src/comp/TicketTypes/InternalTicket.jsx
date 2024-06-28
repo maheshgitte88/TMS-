@@ -8,11 +8,12 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { io } from "socket.io-client";
 import Close from "../Tables/Reply/Close";
+import { serverurl } from "../../exportapp";
 
 const currentTime = new Date();
 const currentDay = new Date();
 function InternalTicket() {
-  const socket = useMemo(() => io("http://13.235.240.117:2000"), []);
+  const socket = useMemo(() => io(`${serverurl}`), []);
 
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [showForm, setShowForm] = useState(false);
@@ -54,7 +55,7 @@ function InternalTicket() {
     const fetchDepartments = async () => {
       try {
         const response = await axios.get(
-          "http://13.235.240.117:2000/api/all-hierarchy"
+          `${serverurl}/api/all-hierarchy`
         );
         setDepartments(response.data);
       } catch (error) {
@@ -89,7 +90,7 @@ function InternalTicket() {
           formData.append("files", file);
 
           const response = await axios.post(
-            "http://13.235.240.117:2000/api/img-save",
+            `${serverurl}/api/img-save`,
             formData,
             {
               headers: {

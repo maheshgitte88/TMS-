@@ -3,6 +3,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { toast } from "react-toastify";
+import { serverurl } from "../../exportapp";
 
 const FeedbackForm = () => {
   const { TrainingId } = useParams();
@@ -31,7 +32,7 @@ const FeedbackForm = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://13.235.240.117:2000/api/feedback",
+        `${serverurl}/api/feedback`,
         formData
       );
       console.log(response.data);

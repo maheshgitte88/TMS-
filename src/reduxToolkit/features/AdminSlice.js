@@ -1,12 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { serverurl } from '../../exportapp'
 
 export const createTicket = createAsyncThunk(
   "createNewticket",
   async (data, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        "http://13.235.240.117:2000/api/create-ticket",
+        `${serverurl}/api/create-ticket`,
         data
       );
       const result = response.data;
@@ -22,7 +23,7 @@ export const updatesTickets = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        "http://13.235.240.117:2000/api/update-ticket",
+        `${serverurl}/api/update-ticket`,
         data
       );
       const result = response.data;
@@ -38,7 +39,7 @@ export const getAdminAssignedTicket = createAsyncThunk(
   async ({ departmentId, SubDepartmentId }, { rejectWithValue }) => {
     try {
       const res = await axios.get(
-        `http://13.235.240.117:2000/api/tickets/${departmentId}/${SubDepartmentId}`
+        `${serverurl}/api/tickets/${departmentId}/${SubDepartmentId}`
       );
       const resData = res.data.tickets;
       return resData;
@@ -56,7 +57,7 @@ export const getAdminTicketFromOtherDep = createAsyncThunk(
   async ({ departmentId, SubDepartmentId }, { rejectWithValue }) => {
     try {
       const res = await axios.get(
-        `http://13.235.240.117:2000/api/trs-tickets/${departmentId}/${SubDepartmentId}`
+        `${serverurl}/api/trs-tickets/${departmentId}/${SubDepartmentId}`
       );
       const resData = res.data.tickets;
       return resData;
@@ -71,7 +72,7 @@ export const getAdminTicketClaimed = createAsyncThunk(
   async ({ user_id }, { rejectWithValue }) => {
     try {
       const res = await axios.get(
-        `http://13.235.240.117:2000/api/emp-ticket/less/claimed/${user_id}`
+        `${serverurl}/api/emp-ticket/less/claimed/${user_id}`
       );
       const resData = res.data.tickets;
       return resData;
@@ -86,7 +87,7 @@ export const getAdminTicketBetweenClaimed = createAsyncThunk(
   async ({ user_id }, { rejectWithValue }) => {
     try {
       const res = await axios.get(
-        `http://13.235.240.117:2000/api/emp-ticket/between/claimed/${user_id}`
+        `${serverurl}/api/emp-ticket/between/claimed/${user_id}`
       );
       const resData = res.data.tickets;
       return resData;
@@ -101,7 +102,7 @@ export const getAdminTicketAboveClaimed = createAsyncThunk(
   async ({ user_id }, { rejectWithValue }) => {
     try {
       const res = await axios.get(
-        `http://13.235.240.117:2000/api/emp-ticket/above/claimed/${user_id}`
+        `${serverurl}/api/emp-ticket/above/claimed/${user_id}`
       );
       // console.log(res , 106)
       const resData = res.data.tickets;
@@ -117,7 +118,7 @@ export const getAdminTranfTicketClaimed = createAsyncThunk(
   async ({ user_id }, { rejectWithValue }) => {
     try {
       const res = await axios.get(
-        `http://13.235.240.117:2000/api/emp-ticket/claimed-trf/${user_id}`
+        `${serverurl}/api/emp-ticket/claimed-trf/${user_id}`
       );
       const resData = res.data.tickets;
       return resData;
@@ -133,7 +134,7 @@ export const getAdminTranfTicketClaimed = createAsyncThunk(
 //   async ({ departmentId, SubDepartmentId, EmployeeID }, { rejectWithValue }) => {
 //     try {
 //       const res = await axios.get(
-//         `http://13.235.240.117:2000/Ticket/department/Resolved/${departmentId}/${SubDepartmentId}/${EmployeeID}`
+//         `${serverurl}/Ticket/department/Resolved/${departmentId}/${SubDepartmentId}/${EmployeeID}`
 //       );
 //       const resData = res.data.tickets;
 //       return resData;
@@ -148,7 +149,7 @@ export const getAdminTranfTicketClaimed = createAsyncThunk(
 //   async ({ departmentId, SubDepartmentId, EmployeeID }, { rejectWithValue }) => {
 //     try {
 //       const res = await axios.get(
-//         `http://13.235.240.117:2000/Ticket/department/Closed/${departmentId}/${SubDepartmentId}/${EmployeeID}`
+//         `${serverurl}/Ticket/department/Closed/${departmentId}/${SubDepartmentId}/${EmployeeID}`
 //       );
 //       const resData = res.data.tickets;
 //       return resData;

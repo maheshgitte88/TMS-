@@ -1,12 +1,13 @@
 import React, { useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
+import { serverurl } from "../../../exportapp";
 import axios from "axios";
 import { updatesTickets } from "../../../reduxToolkit/features/TicketSlice";
 import { toast } from "react-toastify";
 import { io } from "socket.io-client";
 
 function Close({ TicketData }) {
-  const socket = useMemo(() => io("http://13.235.240.117:2000"), []);
+  const socket = useMemo(() => io(`${serverurl}`), []);
 
   const [attchedfiles, setAttchedfiles] = useState(null);
   const [description, setDescription] = useState("");
@@ -34,7 +35,7 @@ function Close({ TicketData }) {
           formData.append("files", file);
 
           const response = await axios.post(
-            "http://13.235.240.117:2000/api/img-save",
+            `${serverurl}/api/img-save`,
             formData,
             {
               headers: {

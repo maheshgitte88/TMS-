@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { serverurl } from "../exportapp";
 import { toast } from "react-toastify";
 import { useAuth } from "../context/AuthContext";
 import { jwtDecode } from "jwt-decode";
@@ -18,7 +19,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://13.235.240.117:2000/api/login",
+        `${serverurl}/api/login`,
         {
           email,
           password,

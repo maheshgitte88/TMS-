@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { serverurl } from '../../exportapp';
 
 const SubCategoryForm = () => {
   const [subCategoryName, setSubCategoryName] = useState('');
@@ -7,7 +8,7 @@ const SubCategoryForm = () => {
   const [selectedCategoryId, setSelectedCategoryId] = useState('');
 
   useEffect(() => {
-    axios.get('http://13.235.240.117:2000/api/categories')
+    axios.get(`${serverurl}/api/categories`)
       .then(response => {
         setCategories(response.data);
       })
@@ -18,7 +19,7 @@ const SubCategoryForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post('http://13.235.240.117:2000/api/subcategories', {
+    axios.post(`${serverurl}/api/subcategories`, {
       SubCategoryName: subCategoryName,
       CategoryId: selectedCategoryId
     })

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
+import { serverurl } from "../../exportapp";
 
 const TrainingForm = () => {
   const token = localStorage.getItem("token");
@@ -39,7 +40,7 @@ const TrainingForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("http://13.235.240.117:2000/api/trainings", formData)
+      .post(`${serverurl}/api/trainings`, formData)
       .then((response) => {
         console.log(response.data);
         toast.success("Training Feedback mails successfully..!");
@@ -54,7 +55,7 @@ const TrainingForm = () => {
     const fetchAttendees = async () => {
       try {
         const response = await axios.get(
-          "http://13.235.240.117:2000/api/allEmployess"
+          `${serverurl}/api/allEmployess`
         );
         const employees = response.data.Employees.map(
           (employee) => employee.user_Email
@@ -69,7 +70,7 @@ const TrainingForm = () => {
     const fetchTrainings = async () => {
       try {
         const response = await axios.get(
-          `http://13.235.240.117:2000/api/gettrainings/${decoded.user_id}`
+          `${serverurl}/api/gettrainings/${decoded.user_id}`
         );
         setTrainings(response.data);
       } catch (error) {

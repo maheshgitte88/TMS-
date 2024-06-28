@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-
+import { serverurl } from "../../../exportapp";
 import { jwtDecode } from "jwt-decode";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -11,7 +11,7 @@ import axios from "axios";
 import { io } from "socket.io-client";
 
 function Transferred({ TicketData, setSelectedTicket }) {
-  const socket = useMemo(() => io("http://13.235.240.117:2000"), []);
+  const socket = useMemo(() => io(`${serverurl}`), []);
 
   const [attchedfiles, setAttchedfiles] = useState(null);
   const [description, setDescription] = useState("");
@@ -65,7 +65,7 @@ function Transferred({ TicketData, setSelectedTicket }) {
           formData.append("files", file);
 
           const response = await axios.post(
-            "http://13.235.240.117:2000/api/img-save",
+            `${serverurl}/api/img-save`,
             formData,
             {
               headers: {

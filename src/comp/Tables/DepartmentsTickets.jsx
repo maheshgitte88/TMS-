@@ -1,5 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { serverurl } from "../../exportapp";
+
 import logo from "../logo.ico";
 
 import {
@@ -22,16 +24,13 @@ import { io } from "socket.io-client";
 import Resolution from "./Reply/Resolution";
 import Transferred from "./Reply/Transferred";
 import { jwtDecode } from "jwt-decode";
-import axios from "axios";
 import moment from "moment";
 import { toast } from "react-toastify";
+import TicketTable from "./TicketTable";
 
 function DepartmentsTickets() {
-  const socket = useMemo(() => io("http://13.235.240.117:2000"), []);
+  const socket = useMemo(() => io(`${serverurl}`), []);
   const [selectedTicket, setSelectedTicket] = useState(null);
-  const [closedTickets, setClosedTickets] = useState([]);
-  const [resolvedTickets, setResolvedTickets] = useState([]);
-  const [activeTab, setActiveTab] = useState(null);
   const [notificationPermission, setNotificationPermission] =
     useState("default");
 
@@ -100,18 +99,6 @@ function DepartmentsTickets() {
       );
     }
   }, []);
-  // const joinedRooms = useRef(new Set());
-
-  // useEffect(() => {
-  //   if (ResFromOtherDepTickets && ResFromOtherDepTickets.length > 0) {
-  //     ResFromOtherDepTickets.forEach((ticket) => {
-  //       if (!joinedRooms.current.has(ticket.TicketID)) {
-  //         socket.emit("userUpdatedticketRoom", ticket.TicketID);
-  //         joinedRooms.current.add(ticket.TicketID);
-  //       }
-  //     });
-  //   }
-  // }, [ResFromOtherDepTickets]);
 
   useEffect(() => {
     socket.on("updatedDeptTicketChat", (data) => {
@@ -133,15 +120,8 @@ function DepartmentsTickets() {
       }
     });
 
-    // socket.on("updatedticketData", (data) => {
-    //   console.log("Ticket update :", data);
-    //   dispatch(updateForAdminTicket(data));
-    // });
-
     socket.on("ticketClaimed", (data) => {
       console.log("Ticket claimed successfully:", data);
-      // dispatch(claimAdminTicket(data));
-      // console.log(data, 127)
 
       const currentUserId = decoded.user_id; // Replace this with your method of getting the current user ID
       if (data.claim_User_Id === currentUserId) {
@@ -150,16 +130,19 @@ function DepartmentsTickets() {
           `Ticket Claimed from ${decoded.user_Name} successfully..!`
         );
       } else {
-        dispatch(AfterOtherAdminClaimRemoveTicket(data));
-        toast.info(
-          `Ticket Id: ${data.TicketID} Claimed from ${data.claim_User.user_Name} successfully..!`
-        );
+        if (data.TicketID) {
+          dispatch(AfterOtherAdminClaimRemoveTicket(data));
+          toast.info(
+            `Ticket Id: ${data.TicketID} Claimed from ${data.claim_User.user_Name} successfully..!`
+          );
+        } else if (data.user_id === currentUserId) {
+          toast.info(`Ticket already Claimed..!`);
+          setSelectedTicket(null);
+        }
       }
     });
 
     socket.on("tranfticketClaimed", (data) => {
-      // console.log("Transferd Ticket claimed successfully:", data);
-      // dispatch(claimAdminTicket(data));
       const currentUserId = decoded.user_id; // Replace this with your method of getting the current user ID
 
       if (data.transferred_Claim_User_id === currentUserId) {
@@ -168,8 +151,15 @@ function DepartmentsTickets() {
           `Ticket Claimed from ${decoded.user_Name} successfully..!`
         );
       } else {
-        dispatch(AfterOtherTranfAdminClaimRemoveTicket(data));
-        // toast.info(`Ticket Id: ${data.TicketID} Claimed from ${data.claim_User.user_Name} successfully..!`);
+        if (data.TicketID) {
+          dispatch(AfterOtherTranfAdminClaimRemoveTicket(data));
+          toast.info(
+            `Ticket Id: ${data.TicketID} Claimed from ${data.transferred_Claim_User_id.user_Name} successfully..!`
+          );
+        } else if (data.user_id === currentUserId) {
+          toast.info(`Ticket already Claimed..!`);
+          setSelectedTicket(null);
+        }
       }
     });
 
@@ -234,7 +224,7 @@ function DepartmentsTickets() {
 
   const handleClaimTicket = async (ticketId) => {
     try {
-      // await axios.post(`http://13.235.240.117:2000/api/claim-ticket/${ticketId}`, {
+      // await axios.post(`${serverurl}/api/claim-ticket/${ticketId}`, {
       //   claim_User_Id: userInfo.user_id
       // });
       const formDataToSend = {
@@ -254,7 +244,7 @@ function DepartmentsTickets() {
 
   const handleTransferdClaimTicket = async (ticketId) => {
     try {
-      // await axios.post(`http://13.235.240.117:2000/api/claim-ticket/${ticketId}`, {
+      // await axios.post(`${serverurl}/api/claim-ticket/${ticketId}`, {
       //   claim_User_Id: userInfo.user_id
       // });
       const formDataToSend = {
@@ -283,8 +273,6 @@ function DepartmentsTickets() {
       ? AdminClaimedAboveTickets
       : AdminClaimedTickets;
 
-  // const { AdminTickets, ResFromOtherDepTickets, AdminClaimedTickets, AdminClaimedBetweenTickets, AdminClaimedAboveTickets, loading } =
-
   useEffect(() => {
     handleTicketClick();
   }, [ticketsData]);
@@ -308,107 +296,6 @@ function DepartmentsTickets() {
         return "text-gray-700"; // Default color for other statuses
     }
   };
-
-  const fetchClosedTickets = async () => {
-    try {
-      const response = await axios.get(
-        `http://13.235.240.117:2000/api/emp-ticket/Closed/${decoded.user_id}`
-      );
-      setClosedTickets(response.data.tickets);
-      setActiveTab("closed");
-    } catch (error) {
-      console.error("Error fetching closed tickets:", error);
-    }
-  };
-
-  const fetchResolvedTickets = async () => {
-    try {
-      const response = await axios.get(
-        `http://13.235.240.117:2000/api/emp-ticket/resolved/${decoded.user_id}`
-      );
-      setResolvedTickets(response.data.tickets);
-      setActiveTab("resolved");
-    } catch (error) {
-      console.error("Error fetching resolved tickets:", error);
-    }
-  };
-
-  const renderTable = (tickets) => (
-    <>
-      <div className="table-container">
-        {tickets.length > 0 ? (
-          <>
-            <h6 className="text-center text-2xl font-bold text-gray-700 my-4">
-              Tickets{" "}
-              <span className={`${getStatusClass(tickets[0].Status)}`}>
-                {tickets[0].Status}
-              </span>{" "}
-              by me
-            </h6>
-            <table
-              className={`custom-table ${
-                selectedTicket ? "selected-table" : ""
-              }`}
-            >
-              <thead>
-                <tr>
-                  <th>Ticket ID</th>
-                  <th>Ticket Type</th>
-                  <th>Ticket Query</th>
-                  <th>Status</th>
-                  <th>Description</th>
-                  <th>Resolution Description</th>
-                  {/* <th>Close Description</th>
-            <th>Resolution Feedback</th> */}
-                  <th>Created At</th>
-                  <th>Updated At</th>
-                </tr>
-              </thead>
-              <tbody>
-                {tickets.map((ticket) => (
-                  <tr
-                    key={ticket.TicketID}
-                    onClick={() => handleTicketClick(ticket)}
-                    className={`cursor-pointer ${
-                      selectedTicket === ticket ? "selected-row" : ""
-                    }`}
-                  >
-                    <td>{ticket.TicketID}</td>
-                    <td>{ticket.TicketType}</td>
-                    <td>{ticket.TicketQuery}</td>
-                    <td>
-                      <span className={getStatusClass(ticket.Status)}>
-                        {ticket.Status}
-                      </span>
-                    </td>
-                    <td>{ticket.Description}</td>
-                    {/* <td>{ticket.ResolutionDescription}</td>
-              <td>{ticket.CloseDescription}</td> */}
-                    <td>{ticket.ResolutionFeedback}</td>
-                    <td>{new Date(ticket.createdAt).toLocaleString()}</td>
-                    <td>{new Date(ticket.updatedAt).toLocaleString()}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </>
-        ) : (
-          <>
-            {" "}
-            <h1 className="text-center text-2xl font-bold text-gray-700 my-4">
-              You Don't Have These Tickets
-            </h1>{" "}
-          </>
-        )}
-      </div>
-    </>
-  );
-
-  // const formatDateTime = (dateTime) => {
-  //   return moment(dateTime).format('YYYY-MM-DD HH:mm:ss');
-  // };
-
-  // console.log(selectedTicket, 281);
 
   const calculateRemainingTimess = (recTime, timeInMinutes) => {
     const currentTime = moment();
@@ -902,25 +789,8 @@ function DepartmentsTickets() {
               </div>
             </>
           )}
-          <div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div
-                onClick={fetchClosedTickets}
-                className="bg-teal-200 p-4 rounded shadow hover:bg-teal-400 cursor-pointer"
-              >
-                Closed {closedTickets.length}
-              </div>
-              <div
-                onClick={fetchResolvedTickets}
-                className="bg-gray-200 p-4 rounded shadow hover:bg-gray-400 cursor-pointer"
-              >
-                Resolved {resolvedTickets.length}
-              </div>
-            </div>
-          </div>
 
-          {activeTab === "closed" && renderTable(closedTickets)}
-          {activeTab === "resolved" && renderTable(resolvedTickets)}
+          <TicketTable handleTicketClick={handleTicketClick} />
         </div>
 
         {/* Right Column */}

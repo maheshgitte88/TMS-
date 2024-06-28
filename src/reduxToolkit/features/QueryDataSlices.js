@@ -1,12 +1,13 @@
 
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { serverurl } from '../../exportapp'
 
 // export const QueryCatSubHierarchyData = createAsyncThunk(
 //     "QueryCatSubHierarchyData",
 //     async (args, { rejectWithValue }) => {
 //         try {
-//             const res = await axios.get(`http://13.235.240.117:2000/get-query-hierarchy`);
+//             const res = await axios.get(`${serverurl}/get-query-hierarchy`);
 //             const resData = res.data;
 //             return resData;
 //         } catch (error) {
@@ -19,7 +20,7 @@ export const DepSubHierachy = createAsyncThunk(
     "DepSubHierachy",
     async (args, { rejectWithValue }) => {
         try {
-            const res = await axios.get(`http://13.235.240.117:2000/api/dep-sub-hierarchy`);
+            const res = await axios.get(`${serverurl}/api/dep-sub-hierarchy`);
             const resData = res.data.departments;
             console.log(resData, 24)
             return resData;

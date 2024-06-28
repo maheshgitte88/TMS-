@@ -1,15 +1,12 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import logo from "../logo.ico";
 import {
   AfterOtherAdminClaimRemoveTicket,
   claimAdminTicket,
-  // claimAdminTicketRemoveAfterTF,
   getAdminAssignedTicket,
   getAdminTicketAboveClaimed,
   getAdminTicketBetweenClaimed,
-  // getAdminTicketAboveClaimed,
-  // getAdminTicketBetweenClaimed,
   getAdminTicketClaimed,
   getAdminTicketFromOtherDep,
   getAdminTranfTicketClaimed,
@@ -18,20 +15,15 @@ import {
 } from "../../reduxToolkit/features/AdminSlice";
 import { io } from "socket.io-client";
 import Resolution from "./Reply/Resolution";
-// import Transferred from "./Reply/Transferred";
 import { jwtDecode } from "jwt-decode";
-import axios from "axios";
 import { toast } from "react-toastify";
-// import axios from "axios";
+import { serverurl } from "../../exportapp";
+import TicketTable from "./TicketTable";
 
 function AdminTicket() {
-  const socket = useMemo(() => io("http://13.235.240.117:2000"), []);
+  const socket = useMemo(() => io(`${serverurl}`), []);
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-
-  const [closedTickets, setClosedTickets] = useState([]);
-  const [resolvedTickets, setResolvedTickets] = useState([]);
-  const [activeTab, setActiveTab] = useState(null);
 
   const [notificationPermission, setNotificationPermission] =
     useState("default");
@@ -122,19 +114,24 @@ function AdminTicket() {
         toast.success(
           `Ticket Claimed from ${decoded.user_Name} successfully..!`
         );
-        // selectedTicket(data);
+        setSelectedTicket(data);
       } else {
-        dispatch(AfterOtherAdminClaimRemoveTicket(data));
-        toast.info(
-          `Ticket Id: ${data.TicketID} Claimed from ${data.claim_User.user_Name} successfully..!`
-        );
+        if (data.TicketID) {
+          dispatch(AfterOtherAdminClaimRemoveTicket(data));
+          toast.info(
+            `Ticket Id: ${data.TicketID} Claimed from ${data.claim_User.user_Name} successfully..!`
+          );
+        } else if (data.user_id === currentUserId) {
+          toast.info(`Ticket already Claimed..!`);
+          setSelectedTicket(null);
+        }
       }
     });
 
     socket.on("ticketUpdatedReciverd", (data) => {
       console.log("Ticket updated successfully:", data);
       dispatch(updateForAdminTicket(data));
-      
+
       setTimeout(() => {
         dispatch(claimAdminTicketRemoveAfterTF(data));
       }, 5000);
@@ -142,18 +139,6 @@ function AdminTicket() {
     });
     socket.emit("joinDepaTicketRoom", decoded.SubDepartmentID);
     socket.emit("updatedticketRoom", decoded.SubDepartmentID);
-
-    // socket.emit("internaltTrnRepTicketUpdate", decoded.SubDepartmentID);
-
-    // socket.on('ticketCreated', (data) => {
-    //   console.log('Ticket created successfully:', data);
-    //   // Handle the ticket creation success as needed
-    // });
-
-    // socket.on('ticketCreationError', (error) => {
-    //   console.error('Ticket creation error:', error.message);
-    //   // Handle the ticket creation error as needed
-    // });
 
     return () => {
       socket.disconnect();
@@ -171,13 +156,6 @@ function AdminTicket() {
         });
     }
   }, []);
-
-  // useEffect(() => {
-  //   socket.on('ticketClaimed', (data) => {
-  //     console.log('Ticket claimed successfully:', data);
-  //     dispatch(claimAdminTicket(data));
-  //   });
-  // }, [socket]);
 
   const showTicketNotification = (data) => {
     if (notificationPermission === "granted") {
@@ -199,8 +177,6 @@ function AdminTicket() {
     }
   };
 
-  // console.log(selectedTicket, 15);
-
   function formatDateTime(dateString) {
     const date = new Date(dateString);
     const year = date.getFullYear();
@@ -219,7 +195,7 @@ function AdminTicket() {
 
   const handleClaimTicket = async (ticketId) => {
     try {
-      // await axios.post(`http://13.235.240.117:2000/api/claim-ticket/${ticketId}`, {
+      // await axios.post(`${serverurl}/api/claim-ticket/${ticketId}`, {
       //   claim_User_Id: userInfo.user_id
       // });
       const formDataToSend = {
@@ -286,98 +262,6 @@ function AdminTicket() {
       isPast,
     };
   };
-
-  const fetchClosedTickets = async () => {
-    try {
-      const response = await axios.get(
-        `http://13.235.240.117:2000/api/emp-ticket/Closed/${decoded.user_id}`
-      );
-      setClosedTickets(response.data.tickets);
-      setActiveTab("closed");
-    } catch (error) {
-      console.error("Error fetching closed tickets:", error);
-    }
-  };
-
-  const fetchResolvedTickets = async () => {
-    try {
-      const response = await axios.get(
-        `http://13.235.240.117:2000/api/emp-ticket/resolved/${decoded.user_id}`
-      );
-      setResolvedTickets(response.data.tickets);
-      setActiveTab("resolved");
-    } catch (error) {
-      console.error("Error fetching resolved tickets:", error);
-    }
-  };
-
-  const renderTable = (tickets) => (
-    <>
-      <div className="table-container">
-        {tickets.length > 0 ? (
-          <>
-            <h6 className="text-center text-2xl font-bold text-gray-700 my-4">
-              Tickets{" "}
-              <span className={`${getStatusClass(tickets[0].Status)}`}>
-                {tickets[0].Status}
-              </span>{" "}
-              by me
-            </h6>
-            <table
-              className={`custom-table ${
-                selectedTicket ? "selected-table" : ""
-              }`}
-            >
-              <thead>
-                <tr>
-                  <th>Ticket ID</th>
-                  <th>Ticket Type</th>
-                  <th>Ticket Query</th>
-                  <th>Status</th>
-                  <th>Description</th>
-                  {/* <th>Resolution Description</th>
-            <th>Close Description</th> */}
-                  <th>Feedback</th>
-                  <th>Created At</th>
-                </tr>
-              </thead>
-              <tbody>
-                {tickets.map((ticket) => (
-                  <tr
-                    key={ticket.TicketID}
-                    onClick={() => handleTicketClick(ticket)}
-                    className={`cursor-pointer ${
-                      selectedTicket === ticket ? "selected-row" : ""
-                    }`}
-                  >
-                    <td>{ticket.TicketID}</td>
-                    <td>{ticket.TicketType}</td>
-                    <td>{ticket.TicketQuery}</td>
-                    <td>
-                      <span className={getStatusClass(ticket.Status)}>
-                        {ticket.Status}
-                      </span>
-                    </td>
-                    <td>{ticket.Description}</td>
-                    {/* <td>{ticket.ResolutionDescription}</td>
-              <td>{ticket.CloseDescription}</td> */}
-                    <td>{ticket.ResolutionFeedback}</td>
-                    <td>{formatDateTime(ticket.createdAt)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </>
-        ) : (
-          <>
-            <h1 className="text-center text-2xl font-bold text-gray-700 my-4">
-              You Don't Have These Tickets
-            </h1>
-          </>
-        )}
-      </div>
-    </>
-  );
 
   return (
     <>
@@ -762,28 +646,7 @@ function AdminTicket() {
             </>
           )}
 
-          <div>
-            <h6 className="font-semibold mb-2">Tickets raised by me</h6>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div
-                onClick={fetchClosedTickets}
-                className="bg-teal-200 p-4 rounded shadow cursor-pointer"
-              >
-                Closed {closedTickets.length}
-              </div>
-              <div
-                onClick={fetchResolvedTickets}
-                className="bg-gray-200 p-4 rounded shadow cursor-pointer"
-              >
-                Resolved {resolvedTickets.length}
-              </div>
-              <div className="bg-cyan-200 p-4 rounded shadow">Card 3</div>
-              <div className="bg-lime-200 p-4 rounded shadow">Card 4</div>
-            </div>
-          </div>
-
-          {activeTab === "closed" && renderTable(closedTickets)}
-          {activeTab === "resolved" && renderTable(resolvedTickets)}
+          <TicketTable handleTicketClick={handleTicketClick} />
         </div>
 
         {/* Right Column */}
@@ -921,7 +784,10 @@ function AdminTicket() {
                           {selectedTicket.claim_User_Id ? (
                             <>
                               <div className="border-t-4 border-sky-500 mt-2 pt-2">
-                                <Resolution TicketData={selectedTicket} setSelectedTicket={setSelectedTicket} />
+                                <Resolution
+                                  TicketData={selectedTicket}
+                                  setSelectedTicket={setSelectedTicket}
+                                />
                               </div>
                             </>
                           ) : (

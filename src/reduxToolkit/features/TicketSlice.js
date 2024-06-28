@@ -1,12 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { serverurl } from '../../exportapp'
 
 export const createTicket = createAsyncThunk(
   "createNewticket",
   async (data, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        "http://13.235.240.117:2000/api/create-ticket",
+        `${serverurl}/api/create-ticket`,
         data
       );
       const result = response.data.ticket;
@@ -23,7 +24,7 @@ export const getUserCreatedTicket = createAsyncThunk(
   async ({ user_id }, { rejectWithValue }) => {
     try {
       const res = await axios.get(
-        `http://13.235.240.117:2000/api/tickets/${user_id}`
+        `${serverurl}/api/tickets/${user_id}`
       );
       const resData = res.data.tickets;
       return resData;
@@ -38,7 +39,7 @@ export const updatesTickets = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        "http://13.235.240.117:2000/api/update-ticket",
+        `${serverurl}/api/update-ticket`,
         data
       );
       const result = response.data;
@@ -54,7 +55,7 @@ export const fetchClosedTickets = createAsyncThunk(
   async ({ user_id }, { rejectWithValue }) => {
     try {
       const res = await axios.get(
-        `http://13.235.240.117:2000/api/Closed/tickets/${user_id}`
+        `${serverurl}/api/Closed/tickets/${user_id}`
       );
       const resData = res.data.tickets;
       return resData;
@@ -69,7 +70,7 @@ export const fetchResolvedTickets = createAsyncThunk(
   async ({ user_id }, { rejectWithValue }) => {
     try {
       const res = await axios.get(
-        `http://13.235.240.117:2000/api/resolved/tickets/${user_id}`
+        `${serverurl}/api/resolved/tickets/${user_id}`
       );
       const resData = res.data.tickets;
       return resData;
