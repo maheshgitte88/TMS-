@@ -13,6 +13,8 @@ import Ticket from "./comp/Ticket";
 import TrainingForm from "./comp/Training/TrainingForm";
 import FeedbackForm from "./comp/Training/FeedbackForm";
 import WorkDetailForm from "./comp/ProActive/WorkDetailForm";
+import StudentPro from "./comp/StudentPro";
+import Reports from "./comp/Reports/Reports";
 
 function App() {
   const dispatch = useDispatch();
@@ -46,11 +48,18 @@ function App() {
           <Route path="Proactive" element={<DashBord />}>
             <Route path="" element={<WorkDetailForm />}></Route>
           </Route>
+          <Route path="studentprogress" element={<DashBord />}>
+            <Route path="" element={<StudentPro />}></Route>
+          </Route>
+          <Route path="reports" element={<DashBord />}>
+            <Route path="" element={<Reports />}></Route>
+          </Route>
         </Route>
         <Route path="/user" element={<PrivateRoute />}>
           <Route path="Ticket" element={<DashBord />}>
             {/* <Route path="" element={<Home />}></Route> */}
             <Route path="" element={<Ticket />}></Route>
+
             {/* <Route path="Reply" element={<Reply />}></Route>
             <Route path="Org" element={<Org />}></Route>
             <Route path="Team" element={<Team />}></Route> */}

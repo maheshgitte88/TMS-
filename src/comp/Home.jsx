@@ -2,11 +2,13 @@ import React from "react";
 import AdminTicket from "./Tables/AdminTicket";
 import DepartmentsTickets from "./Tables/DepartmentsTickets";
 import { jwtDecode } from "jwt-decode";
+import GoogleCalendar from "./GoogleCalendar";
 
 function Home() {
   const token = localStorage.getItem("token");
 
   const decoded = jwtDecode(token);
+  console.log(decoded)
 
   return (
     <>
@@ -22,6 +24,8 @@ function Home() {
               <DepartmentsTickets />
             </>
           )}
+
+          <GoogleCalendar email={decoded.user_Email} />
         </div>
       </div>
     </>

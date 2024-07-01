@@ -85,6 +85,18 @@ const Sidebar = () => {
                     >
                      <i className="bi bi-card-text"></i> Add Proactive
                     </Link>
+                    <Link
+                      to="/admin/studentprogress"
+                      className="block py-2 px-3 text-base hover:bg-orange-700 hover:text-white-700 hover:text-lg"
+                    >
+                     <i class="bi bi-clipboard-data"></i> Student Progress
+                    </Link>
+                    <Link
+                      to="/admin/reports"
+                      className="block py-2 px-3 text-base hover:bg-orange-700 hover:text-white-700 hover:text-lg"
+                    >
+                    <i class="bi bi-bar-chart"></i> Reports
+                    </Link>
                   </>
                 )}
 
@@ -176,6 +188,18 @@ const Sidebar = () => {
                       >
                         <i className="bi bi-card-text"></i>
                       </Link>
+                      <Link
+                      to="/admin/studentprogress"
+                      className="block py-2 px-3 text-xl hover:bg-orange-700 hover:text-white-700 hover:text-lg"
+                    >
+                     <i class="bi bi-clipboard-data"></i>
+                    </Link>
+                    <Link
+                      to="/admin/reports"
+                      className="block py-2 px-3 text-xl hover:bg-orange-700 hover:text-white-700 hover:text-lg"
+                    >
+                    <i class="bi bi-bar-chart"></i>
+                    </Link>
                   </>
                 )}
 
