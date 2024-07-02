@@ -19,25 +19,26 @@ const Sidebar = () => {
   return (
     <>
       <>
-        <aside
-          className={`bg-gray-800 text-white ${
-            isOpen ? "w-48" : "w-12"
-          } min-h-dvh min-h-lvh transition-width duration-300 ease-in-out`}
-        >
-          <div className="flex justify-between border-b items-center py-2 px-3">
-            <button onClick={toggleSidebar} className="text-white text-xl">
-              {isOpen ? (
-                <i className="bi bi-arrow-left-square"></i>
-              ) : (
-                <i className="bi bi-arrow-right-square"></i>
-              )}
-            </button>
-          </div>
+        <div className="flex">
+          <aside
+            className={`bg-gray-800 text-white ${
+              isOpen ? "w-48" : "w-12"
+            } transition-width duration-300 ease-in-out sticky top-0 h-screen`}
+          >
+            <div className="flex justify-between border-b items-center py-2 px-3">
+              <button onClick={toggleSidebar} className="text-white text-xl">
+                {isOpen ? (
+                  <i className="bi bi-arrow-left-square"></i>
+                ) : (
+                  <i className="bi bi-arrow-right-square"></i>
+                )}
+              </button>
+            </div>
 
-          {isOpen ? (
-            <>
-              <nav className="h-full">
-                {/* <Link
+            {isOpen ? (
+              <>
+                <nav className="h-full">
+                  {/* <Link
                     to="/user/dashboard/org"
                     className="block py-2 px-3 text-base hover:bg-orange-700 hover:text-white-700 hover:text-lg"
                   >
@@ -49,58 +50,58 @@ const Sidebar = () => {
                   >
                     <i className="bi bi-people"></i> Team
                   </Link> */}
-                {decoded.user_Roal === "Student" ? (
-                  <>
-                    <Link
-                      to="/user/Ticket"
-                      className="block py-2 px-3 text-base hover:bg-orange-700 hover:text-white-700 hover:text-lg"
-                    >
-                      <i className="bi bi-ticket"></i> Ticket
-                    </Link>
-                  </>
-                ) : (
-                  <>
-                    <Link
-                      to="/admin/home"
-                      className="block py-2 px-3 text-base hover:bg-orange-700 hover:text-white-700 hover:text-lg"
-                    >
-                      <i className="bi bi-house fs-2 "></i> Home
-                    </Link>
+                  {decoded.user_Roal === "Student" ? (
+                    <>
+                      <Link
+                        to="/user/Ticket"
+                        className="block py-2 px-3 text-base hover:bg-orange-700 hover:text-white-700 hover:text-lg"
+                      >
+                        <i className="bi bi-ticket"></i> Ticket
+                      </Link>
+                    </>
+                  ) : (
+                    <>
+                      <Link
+                        to="/admin/home"
+                        className="block py-2 px-3 text-base hover:bg-orange-700 hover:text-white-700 hover:text-lg"
+                      >
+                        <i className="bi bi-house fs-2 "></i> Home
+                      </Link>
 
-                    <Link
-                      to="/user/Ticket"
-                      className="block py-2 px-3 text-base hover:bg-orange-700 hover:text-white-700 hover:text-lg"
-                    >
-                      <i className="bi bi-ticket"></i> Ticket
-                    </Link>
-                    <Link
-                      to="/admin/training"
-                      className="block py-2 px-3 text-base hover:bg-orange-700 hover:text-white-700 hover:text-lg"
-                    >
-                      <i className="bi bi-people"></i> Training Feedback
-                    </Link>
-                    <Link
-                      to="/admin/Proactive"
-                      className="block py-2 px-3 text-base hover:bg-orange-700 hover:text-white-700 hover:text-lg"
-                    >
-                     <i className="bi bi-card-text"></i> Add Proactive
-                    </Link>
-                    <Link
-                      to="/admin/studentprogress"
-                      className="block py-2 px-3 text-base hover:bg-orange-700 hover:text-white-700 hover:text-lg"
-                    >
-                     <i class="bi bi-clipboard-data"></i> Student Progress
-                    </Link>
-                    <Link
-                      to="/admin/reports"
-                      className="block py-2 px-3 text-base hover:bg-orange-700 hover:text-white-700 hover:text-lg"
-                    >
-                    <i class="bi bi-bar-chart"></i> Reports
-                    </Link>
-                  </>
-                )}
+                      <Link
+                        to="/user/Ticket"
+                        className="block py-2 px-3 text-base hover:bg-orange-700 hover:text-white-700 hover:text-lg"
+                      >
+                        <i className="bi bi-ticket"></i> Ticket
+                      </Link>
+                      <Link
+                        to="/admin/training"
+                        className="block py-2 px-3 text-base hover:bg-orange-700 hover:text-white-700 hover:text-lg"
+                      >
+                        <i className="bi bi-people"></i> Training Feedback
+                      </Link>
+                      <Link
+                        to="/admin/Proactive"
+                        className="block py-2 px-3 text-base hover:bg-orange-700 hover:text-white-700 hover:text-lg"
+                      >
+                        <i className="bi bi-card-text"></i> Add Proactive
+                      </Link>
+                      <Link
+                        to="/admin/studentprogress"
+                        className="block py-2 px-3 text-base hover:bg-orange-700 hover:text-white-700 hover:text-lg"
+                      >
+                        <i class="bi bi-clipboard-data"></i> Student Progress
+                      </Link>
+                      <Link
+                        to="/admin/reports"
+                        className="block py-2 px-3 text-base hover:bg-orange-700 hover:text-white-700 hover:text-lg"
+                      >
+                        <i class="bi bi-bar-chart"></i> Reports
+                      </Link>
+                    </>
+                  )}
 
-                {/* <div
+                  {/* <div
                     className="block py-2 px-3 text-base hover:bg-orange-700 hover:text-white-700 hover:text-lg"
                     onClick={toggleSubMenu}
                     // style={{ cursor: "pointer" }}
@@ -119,7 +120,7 @@ const Sidebar = () => {
                     </div>
                   </div> */}
 
-                {/* {showSubMenu && (
+                  {/* {showSubMenu && (
                     <div className="ml-4">
                       <Link
                         to="/user/dashboard/Reply"
@@ -135,12 +136,12 @@ const Sidebar = () => {
                       </Link>
                     </div>
                   )} */}
-              </nav>
-            </>
-          ) : (
-            <>
-              <nav className="h-full">
-                {/* <Link
+                </nav>
+              </>
+            ) : (
+              <>
+                <nav className="h-full">
+                  {/* <Link
                     to="/user/dashboard/Org"
                     className="block py-2 px-3 text-xl hover:bg-orange-700 hover:text-white-700 hover:text-2xl"
                   >
@@ -153,57 +154,57 @@ const Sidebar = () => {
                     <i className="bi bi-people"></i>
                   </Link> */}
 
-                {decoded.user_Roal === "Student" ? (
-                  <>
-                    <Link
-                      to="/user/Ticket"
-                      className="block py-2 px-3 text-xl hover:bg-orange-700 hover:text-white-700 hover:text-2xl"
-                    >
-                      <i className="bi bi-ticket"></i>
-                    </Link>
-                  </>
-                ) : (
-                  <>
-                    <Link
-                      to="/admin/home"
-                      className="block py-2 px-3 text-xl hover:bg-orange-700 hover:text-white-700 hover:text-2xl"
-                    >
-                      <i className="bi bi-house"></i>
-                    </Link>
-                    <Link
-                      to="/user/Ticket"
-                      className="block py-2 px-3 text-xl hover:bg-orange-700 hover:text-white-700 hover:text-2xl"
-                    >
-                      <i className="bi bi-ticket"></i>
-                    </Link>
-                    <Link
-                      to="/admin/training"
-                      className="block py-2 px-3 text-xl hover:bg-orange-700 hover:text-white-700 hover:text-lg"
-                    >
-                      <i className="bi bi-people"></i>
-                    </Link>
-                    <Link
+                  {decoded.user_Roal === "Student" ? (
+                    <>
+                      <Link
+                        to="/user/Ticket"
+                        className="block py-2 px-3 text-xl hover:bg-orange-700 hover:text-white-700 hover:text-2xl"
+                      >
+                        <i className="bi bi-ticket"></i>
+                      </Link>
+                    </>
+                  ) : (
+                    <>
+                      <Link
+                        to="/admin/home"
+                        className="block py-2 px-3 text-xl hover:bg-orange-700 hover:text-white-700 hover:text-2xl"
+                      >
+                        <i className="bi bi-house"></i>
+                      </Link>
+                      <Link
+                        to="/user/Ticket"
+                        className="block py-2 px-3 text-xl hover:bg-orange-700 hover:text-white-700 hover:text-2xl"
+                      >
+                        <i className="bi bi-ticket"></i>
+                      </Link>
+                      <Link
+                        to="/admin/training"
+                        className="block py-2 px-3 text-xl hover:bg-orange-700 hover:text-white-700 hover:text-lg"
+                      >
+                        <i className="bi bi-people"></i>
+                      </Link>
+                      <Link
                         to="/admin/Proactive"
                         className="block py-2 px-3 text-xl hover:bg-orange-700 hover:text-white-700 hover:text-lg"
                       >
                         <i className="bi bi-card-text"></i>
                       </Link>
                       <Link
-                      to="/admin/studentprogress"
-                      className="block py-2 px-3 text-xl hover:bg-orange-700 hover:text-white-700 hover:text-lg"
-                    >
-                     <i class="bi bi-clipboard-data"></i>
-                    </Link>
-                    <Link
-                      to="/admin/reports"
-                      className="block py-2 px-3 text-xl hover:bg-orange-700 hover:text-white-700 hover:text-lg"
-                    >
-                    <i class="bi bi-bar-chart"></i>
-                    </Link>
-                  </>
-                )}
+                        to="/admin/studentprogress"
+                        className="block py-2 px-3 text-xl hover:bg-orange-700 hover:text-white-700 hover:text-lg"
+                      >
+                        <i class="bi bi-clipboard-data"></i>
+                      </Link>
+                      <Link
+                        to="/admin/reports"
+                        className="block py-2 px-3 text-xl hover:bg-orange-700 hover:text-white-700 hover:text-lg"
+                      >
+                        <i class="bi bi-bar-chart"></i>
+                      </Link>
+                    </>
+                  )}
 
-                {/* <div
+                  {/* <div
                     className="block py-2 px-3 text-base flex justify-around "
                     onClick={toggleSubMenu}
                     style={{ cursor: "pointer" }}
@@ -227,10 +228,11 @@ const Sidebar = () => {
                       </Link>
                     </div>
                   )} */}
-              </nav>
-            </>
-          )}
-        </aside>
+                </nav>
+              </>
+            )}
+          </aside>
+        </div>
       </>
     </>
   );

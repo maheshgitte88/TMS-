@@ -255,7 +255,7 @@ function Reports() {
       </div>
 
       <div className="mx-1 my-1">
-        <ItTms />
+        <ItTms  tData={tickets} />
       </div>
       {/* <button
         className="bg-blue-500 text-white px-4 py-2 rounded mr-2"
