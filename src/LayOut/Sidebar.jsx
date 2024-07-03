@@ -90,13 +90,14 @@ const Sidebar = () => {
                         to="/admin/studentprogress"
                         className="block py-2 px-3 text-base hover:bg-orange-700 hover:text-white-700 hover:text-lg"
                       >
-                        <i class="bi bi-clipboard-data"></i> Student Progress
+                        <i className="bi bi-clipboard-data"></i> Student
+                        Progress
                       </Link>
                       <Link
                         to="/admin/reports"
                         className="block py-2 px-3 text-base hover:bg-orange-700 hover:text-white-700 hover:text-lg"
                       >
-                        <i class="bi bi-bar-chart"></i> Reports
+                        <i className="bi bi-bar-chart"></i> Reports
                       </Link>
                     </>
                   )}
@@ -193,13 +194,13 @@ const Sidebar = () => {
                         to="/admin/studentprogress"
                         className="block py-2 px-3 text-xl hover:bg-orange-700 hover:text-white-700 hover:text-lg"
                       >
-                        <i class="bi bi-clipboard-data"></i>
+                        <i className="bi bi-clipboard-data"></i>
                       </Link>
                       <Link
                         to="/admin/reports"
                         className="block py-2 px-3 text-xl hover:bg-orange-700 hover:text-white-700 hover:text-lg"
                       >
-                        <i class="bi bi-bar-chart"></i>
+                        <i className="bi bi-bar-chart"></i>
                       </Link>
                     </>
                   )}
