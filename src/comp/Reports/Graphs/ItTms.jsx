@@ -2,7 +2,11 @@ import React from "react";
 import DrilldownPieChart from "./Charts/DrilldownPieChart";
 import PieChart from "./Charts/PieChart";
 
-export default function ItTms({ tData }) {
+export default function ItTms({
+  tData,
+  averageActualTAT,
+  averageActualTATOrg,
+}) {
   const getMinutesDifference = (start, end) => {
     const startDate = new Date(start);
     const endDate = new Date(end);
@@ -62,9 +66,7 @@ export default function ItTms({ tData }) {
         >
           <div>
             <strong>Avg of TAT (min)</strong>
-            <h5 className="font-semibold">
-              {calculateAverageTAT(tData).toFixed(3)}
-            </h5>
+            <h5 className="font-semibold">{averageActualTAT.toFixed(3)}</h5>
           </div>
         </div>
 
@@ -73,9 +75,7 @@ export default function ItTms({ tData }) {
         >
           <div>
             <strong>Avg of Actual TAT (min)</strong>
-            <h5 className="font-semibold">
-              {calculateActualAverageTAT(tData).toFixed(3)}
-            </h5>
+            <h5 className="font-semibold">{averageActualTATOrg.toFixed(3)}</h5>
           </div>
         </div>
 

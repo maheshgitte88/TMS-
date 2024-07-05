@@ -227,9 +227,11 @@ function DepartmentsTickets() {
       // await axios.post(`${serverurl}/api/claim-ticket/${ticketId}`, {
       //   claim_User_Id: userInfo.user_id
       // });
+      const currentDate = new Date();
       const formDataToSend = {
         TicketID: ticketId,
         user_id: userInfo.user_id,
+        claimTimestamp:currentDate.toISOString(),
       };
       socket.emit("claimTicket", {
         AssignedToSubDepartmentID: decoded.SubDepartmentID,
@@ -247,9 +249,11 @@ function DepartmentsTickets() {
       // await axios.post(`${serverurl}/api/claim-ticket/${ticketId}`, {
       //   claim_User_Id: userInfo.user_id
       // });
+      const currentDate = new Date();
       const formDataToSend = {
         TicketID: ticketId,
         user_id: userInfo.user_id,
+        tranfclaimTimestamp:currentDate.toISOString(),
       };
       socket.emit("transfclaimTicket", {
         AssignedToSubDepartmentID: decoded.SubDepartmentID,

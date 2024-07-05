@@ -10,7 +10,6 @@ function Reports() {
   const sevenDaysAgo = new Date(today);
   sevenDaysAgo.setDate(today.getDate() - 7);
 
-  // Format dates to YYYY-MM-DD
   const formatDate = (date) => date.toISOString().split("T")[0];
 
   const defaultStartDate = formatDate(sevenDaysAgo);
@@ -27,6 +26,8 @@ function Reports() {
   const [locations, setLocations] = useState([]);
   const [ticketTypes, setTicketTypes] = useState([]);
   const [queryTypes, setQueryTypes] = useState([]);
+  const [averageActualTAT, setAverageActualTAT] = useState(0);
+  const [averageActualTATOrg, setaverageActualTATOrg] = useState(0);
 
   useEffect(() => {
     // Fetch departments on component mount
@@ -56,16 +57,13 @@ function Reports() {
       })
       .then((response) => {
         // Assuming `processTickets` is an async function, handle it appropriately
-        return processTickets(response.data);
-      })
-      .then((processedTickets) => {
-        setTickets(processedTickets); // Set state with processed tickets
+        setTickets(response.data);
       })
       .catch((error) => {
         console.error("There was an error fetching the tickets!", error);
       });
   };
-  
+
   useEffect(() => {
     fetchTickets();
   }, [
@@ -78,92 +76,6 @@ function Reports() {
     queryTypes,
     selectedSubDepartments,
   ]);
-  
-  const isWeekend = (date) => {
-    const day = date.getDay();
-    return day === 0 || day === 6; // Sunday or Saturday
-  };
-  
-  const isWithinWorkingHours = (date) => {
-    const startHour = 10;
-    const startMinute = 0;
-    const endHour = 16;
-    const endMinute = 0;
-  
-    const hour = date.getHours();
-    const minute = date.getMinutes();
-  
-    if (hour < startHour || hour > endHour) return false;
-    if (hour === startHour && minute < startMinute) return false;
-    if (hour === endHour && minute > endMinute) return false;
-  
-    return true;
-  };
-  
-  const getWorkingMinutes = (start, end) => {
-    let totalMinutes = 0;
-    let current = new Date(start);
-  
-    while (current <= end) {
-      if (!isWeekend(current) && isWithinWorkingHours(current)) {
-        totalMinutes++;
-      }
-      current.setMinutes(current.getMinutes() + 1);
-    }
-  
-    return totalMinutes;
-  };
-  
-  const calculateTAT = (
-    createdAt,
-    resolutionTimestamp,
-    ticketResTimeInMinutes
-  ) => {
-    const start = new Date(createdAt);
-    const end = new Date(resolutionTimestamp);
-  
-    const totalWorkingMinutes = getWorkingMinutes(start, end);
-    const actualTAT = totalWorkingMinutes;
-    const benchmarkPercentage =
-      ((actualTAT - ticketResTimeInMinutes) / ticketResTimeInMinutes) * 100;
-  
-    let benchmarkCategory;
-    if (benchmarkPercentage < 1) {
-      benchmarkCategory = "<0 %";
-    } else if (benchmarkPercentage <= 20) {
-      benchmarkCategory = "1% to 20%";
-    } else if (benchmarkPercentage <= 50) {
-      benchmarkCategory = "21% to 50%";
-    } else if (benchmarkPercentage <= 80) {
-      benchmarkCategory = "51% to 80%";
-    } else {
-      benchmarkCategory = "81% to above";
-    }
-  
-    return {
-      actualTAT,
-      benchmarkPercentage,
-      benchmarkCategory,
-    };
-  };
-  
-  async function processTickets(tickets) {
-    return Promise.all(
-      tickets.map(async (ticket) => {
-        const { createdAt, Resolution_Timestamp, TicketResTimeInMinutes } = ticket;
-        const result = calculateTAT(
-          createdAt,
-          Resolution_Timestamp,
-          TicketResTimeInMinutes
-        );
-        return {
-          ...ticket,
-          ...result,
-        };
-      })
-    );
-  }
-
 
   useEffect(() => {
     const departmentIds = selectedDepartments.map((d) => d.value);
@@ -183,7 +95,34 @@ function Reports() {
 
   console.log(tickets, 100);
 
+  useEffect(() => {
+    const calculateAverage = (data) => {
+      // Filter the data to include only "Resolved" or "Closed" statuses
+      const filteredData = data.filter(
+        (ticket) => ticket.Status === "Resolved" || ticket.Status === "Closed"
+      );
 
+      // Initialize variables to accumulate sum
+      let totalActualTAT = 0;
+      let totalActualTATOrg = 0;
+
+      // Iterate over each filtered ticket object
+      filteredData.forEach((ticket) => {
+        // Add actualTAT to totalActualTAT
+        totalActualTAT += ticket.actualTAT;
+
+        // Add actualTATOrg to totalActualTATOrg
+        totalActualTATOrg += ticket.actualTATOrig;
+      });
+
+      // Calculate average actualTAT
+      setAverageActualTAT(totalActualTAT / filteredData.length);
+
+      // Calculate average actualTATOrg
+      setaverageActualTATOrg(totalActualTATOrg / filteredData.length);
+    };
+    calculateAverage(tickets);
+  }, [tickets]);
 
   return (
     <div className="container mx-auto p-2">
@@ -305,7 +244,11 @@ function Reports() {
       </div>
 
       <div className="mx-1 my-1">
-        <ItTms tData={tickets} />
+        <ItTms
+          tData={tickets}
+          averageActualTAT={averageActualTAT}
+          averageActualTATOrg={averageActualTATOrg}
+        />
       </div>
       {/* <button
         className="bg-blue-500 text-white px-4 py-2 rounded mr-2"
@@ -314,9 +257,7 @@ function Reports() {
         Show Tickets
       </button> */}
 
-      <div className="mt-2">
-        {/* <TableData tData={tickets} /> */}
-      </div>
+      <div className="mt-2">{/* <TableData tData={tickets} /> */}</div>
     </div>
   );
 }
