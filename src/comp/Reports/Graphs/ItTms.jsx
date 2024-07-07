@@ -1,6 +1,12 @@
 import React from "react";
 import DrilldownPieChart from "./Charts/DrilldownPieChart";
 import PieChart from "./Charts/PieChart";
+import PieChartForHoursSlab from "./Charts/PieChartForHoursSlab";
+import UserNpsTable from "./Charts/UserNpsTable";
+import BarChartTicketStatus from "./Charts/BarChartTicketStatus";
+import UserFeedbackTable from "./Charts/UserFeedbackTable";
+import DepthDepBarChart from "./Charts/DepthDepBarChart";
+import BarChartCateSub from "./Charts/BarChartCateSub";
 
 export default function ItTms({
   tData,
@@ -65,7 +71,7 @@ export default function ItTms({
           className={`bg-green-200 p-5 flex justify-around rounded shadow cursor-pointer`}
         >
           <div>
-            <strong>Avg of TAT (min)</strong>
+            <strong>Avg Actual TAT (min)</strong>
             <h5 className="font-semibold">{averageActualTAT.toFixed(3)}</h5>
           </div>
         </div>
@@ -74,7 +80,7 @@ export default function ItTms({
           className={`bg-blue-200 p-5 justify-around rounded shadow cursor-pointer`}
         >
           <div>
-            <strong>Avg of Actual TAT (min)</strong>
+            <strong>Avg of TAT (min)</strong>
             <h5 className="font-semibold">{averageActualTATOrg.toFixed(3)}</h5>
           </div>
         </div>
@@ -84,7 +90,14 @@ export default function ItTms({
         ></div>
       </div>
       <DrilldownPieChart />
-      <PieChart />
+      <PieChart tData={tData} />
+      <PieChartForHoursSlab tData={tData} />
+      
+      <UserNpsTable tData={tData} />
+      <BarChartTicketStatus tData={tData} />
+      <UserFeedbackTable tickets={tData}/>
+      <DepthDepBarChart tickets={tData}/>
+      <BarChartCateSub tickets={tData} />
     </>
   );
 }

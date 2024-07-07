@@ -26,6 +26,7 @@ function Reports() {
   const [locations, setLocations] = useState([]);
   const [ticketTypes, setTicketTypes] = useState([]);
   const [queryTypes, setQueryTypes] = useState([]);
+  const [idelBechmark, setIdelBechmark] = useState([]);
   const [averageActualTAT, setAverageActualTAT] = useState(0);
   const [averageActualTATOrg, setaverageActualTATOrg] = useState(0);
 
@@ -53,6 +54,7 @@ function Reports() {
           locations: locations.map((l) => l.value),
           ticketTypes: ticketTypes.map((t) => t.value),
           queryTypes: queryTypes.map((q) => q.value),
+          idelBechmark: idelBechmark.map((x) => x.value),
         },
       })
       .then((response) => {
@@ -66,6 +68,7 @@ function Reports() {
 
   useEffect(() => {
     fetchTickets();
+    
   }, [
     statuses,
     startDate,
@@ -75,6 +78,7 @@ function Reports() {
     ticketTypes,
     queryTypes,
     selectedSubDepartments,
+    idelBechmark
   ]);
 
   useEffect(() => {
@@ -124,10 +128,13 @@ function Reports() {
     calculateAverage(tickets);
   }, [tickets]);
 
+
+
+
   return (
     <div className="container mx-auto p-2">
       <h1 className="text font-bold mb-1">Ticket System</h1>
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
         <div className="mb-1">
           <label className="block text-sm font-medium text-gray-700">
             Departments
@@ -143,7 +150,7 @@ function Reports() {
           />
         </div>
 
-        {subDepartments.length > 0 && (
+        {subDepartments.length > 1 && (
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700">
               SubDepartments
@@ -241,6 +248,23 @@ function Reports() {
             onChange={setQueryTypes}
           />
         </div>
+        <div className="mb-1">
+          <label className="block text-sm font-medium text-gray-700">
+            Idel Benchmark
+          </label>
+          <Select
+            isMulti
+            options={[
+              { value: "<0 %", label: "<0 %" },
+              { value: "1% to 20%", label: "1% to 20%" },
+              { value: "21% to 50%", label: "21% to 50%" },
+              { value: "51% to 80%", label: "51% to 80%" },
+              { value: "81% to above", label: "81% to above" },
+            ]}
+            value={idelBechmark}
+            onChange={setIdelBechmark}
+          />
+        </div>
       </div>
 
       <div className="mx-1 my-1">
@@ -250,12 +274,12 @@ function Reports() {
           averageActualTATOrg={averageActualTATOrg}
         />
       </div>
-      {/* <button
+      <button
         className="bg-blue-500 text-white px-4 py-2 rounded mr-2"
-        onClick={fetchTickets}
+        onClick={exportToExcel}
       >
-        Show Tickets
-      </button> */}
+       exportToExcel
+      </button>
 
       <div className="mt-2">{/* <TableData tData={tickets} /> */}</div>
     </div>

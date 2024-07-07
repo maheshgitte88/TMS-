@@ -1,68 +1,71 @@
-import React, { useState } from "react";
+// PieChart.js
+import React, { useEffect, useState } from "react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
+import axios from "axios";
 
-const PieChart = () => {
+const PieChart = ({tData}) => {
   const [options, setOptions] = useState({
     chart: {
-      type: "pie",
+      type: 'pie',
     },
     title: {
-      text: "Browser market shares in January, 2018",
+      text: 'Ticket Categories and Subcategories',
     },
     tooltip: {
-      pointFormat: "{series.name}: <b>{point.percentage:.1f}%</b>",
+      pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b> ({point.count} tickets)',
     },
     accessibility: {
       point: {
-        valueSuffix: "%",
+        valueSuffix: '%',
       },
     },
     plotOptions: {
       pie: {
         allowPointSelect: true,
-        cursor: "pointer",
+        cursor: 'pointer',
         dataLabels: {
           enabled: true,
-          format: "<b>{point.name}</b>: {point.percentage:.1f} %",
+          format: '<b>{point.name}</b>: {point.percentage:.1f}% ({point.count} tickets)',
         },
       },
     },
     series: [
       {
-        name: "Brands",
+        name: 'Categories and Subcategories',
         colorByPoint: true,
-        data: [
-          {
-            name: "Chrome",
-            y: 61.41,
-            sliced: true,
-            selected: true,
-          },
-          {
-            name: "Internet Explorer",
-            y: 11.84,
-          },
-          {
-            name: "Firefox",
-            y: 10.85,
-          },
-          {
-            name: "Edge",
-            y: 4.67,
-          },
-          {
-            name: "Safari",
-            y: 4.18,
-          },
-          {
-            name: "Other",
-            y: 7.05,
-          },
-        ],
+        data: [],
       },
     ],
   });
+
+  useEffect(() => {
+    if (tData.length > 0) {
+      const totalTickets = tData.length;
+
+      const categoryCounts = tData.reduce((acc, ticket) => {
+        const key = `${ticket.Querycategory} - ${ticket.QuerySubcategory}`;
+        acc[key] = (acc[key] || 0) + 1;
+        return acc;
+      }, {});
+
+      const data = Object.keys(categoryCounts).map(category => ({
+        name: category,
+        y: (categoryCounts[category] / totalTickets) * 100,
+        count: categoryCounts[category],
+      }));
+
+      setOptions(prevOptions => ({
+        ...prevOptions,
+        series: [
+          {
+            ...prevOptions.series[0],
+            data: data,
+          },
+        ],
+      }));
+    }
+  }, [tData]);
 
   return (
     <div>
