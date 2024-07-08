@@ -38,12 +38,14 @@ function LeadTransfer() {
   const [filteredCategories, setFilteredCategories] = useState([]);
   const [filteredSubCategories, setFilteredSubCategories] = useState([]);
 
+  console.log(allDepartments, filteredSubDepartments, filteredCategories, filteredSubCategories, 41)
+
   const [selectedGenDepartment, setSelectedGenDepartment] = useState("");
   const [selectedGenSubDepartment, setSelectedGenSubDepartment] = useState("");
   const [selectedGenCategory, setSelectedGenCategory] = useState("");
   const [selectedGenSubcategory, setSelectedGenSubcategory] = useState("");
   const [timeInMinutes, setTimeInMinutes] = useState("");
-
+console.log(selectedGenDepartment,selectedGenSubDepartment, selectedGenCategory, selectedGenSubcategory, 46  )
   const [attendees, setAttendees] = useState([]);
   const [ccMarksForLead, setCMarkForLead] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -87,9 +89,7 @@ function LeadTransfer() {
   useEffect(() => {
     const fetchQueryData = async () => {
       try {
-        const response = await axios.get(
-          `${serverurl}/api/mis-hierarchy`
-        );
+        const response = await axios.get(`${serverurl}/api/mis-hierarchy`);
         setQueryCategories(response.data);
       } catch (error) {
         console.error("Error fetching query data:", error);
@@ -106,9 +106,7 @@ function LeadTransfer() {
         const decoded = jwtDecode(token);
         console.log(decoded, 19);
 
-        const response = await axios.get(
-          `${serverurl}/api/all-hierarchy`
-        );
+        const response = await axios.get(`${serverurl}/api/all-hierarchy`);
         const resData = response.data;
         console.log(resData, 110);
 
@@ -133,9 +131,7 @@ function LeadTransfer() {
 
     const fetchAttendees = async () => {
       try {
-        const response = await axios.get(
-          `${serverurl}/api/allEmployess`
-        );
+        const response = await axios.get(`${serverurl}/api/allEmployess`);
         const employees = response.data.Employees.map(
           (employee) => employee.user_Email
         );
@@ -173,7 +169,7 @@ function LeadTransfer() {
       });
     }
   }, [UserTickets]);
-  
+
   useEffect(() => {
     if (UserTickets && UserTickets.length > 0) {
       UserTickets.forEach((ticket) => {
@@ -184,7 +180,6 @@ function LeadTransfer() {
       });
     }
   }, [UserTickets]);
-
 
   const handleFileChange = (e) => {
     setFormData({
@@ -479,20 +474,20 @@ function LeadTransfer() {
 
     return (
       <div className="flex justify-center my-4">
-      {Array.from({ length: totalPages }, (_, index) => (
-        <button
-          key={index}
-          onClick={() => setCurrentPage(index + 1)}
-          className={`mx-1 px-3 py-1 border rounded ${
-            currentPage === index + 1
-              ? "bg-blue-500 text-white"
-              : "bg-white text-blue-500 border-blue-500"
-          }`}
-        >
-          {index + 1}
-        </button>
-      ))}
-    </div>
+        {Array.from({ length: totalPages }, (_, index) => (
+          <button
+            key={index}
+            onClick={() => setCurrentPage(index + 1)}
+            className={`mx-1 px-3 py-1 border rounded ${
+              currentPage === index + 1
+                ? "bg-blue-500 text-white"
+                : "bg-white text-blue-500 border-blue-500"
+            }`}
+          >
+            {index + 1}
+          </button>
+        ))}
+      </div>
     );
   };
 
@@ -507,64 +502,74 @@ function LeadTransfer() {
       <>
         {tickets.length > 0 ? (
           <>
-          <div className="bg-white p-1 mt-2">
-          <h6 className="text-center text-2xl font-bold text-gray-700 my-1">
-              Tickets raised by me{" "}
-              <span className={`${getStatusClass(tickets[0].Status)}`}>
-                {tickets[0].Status}
-              </span>
-            </h6>
+            <div className="bg-white p-1 mt-2">
+              <h6 className="text-center text-2xl font-bold text-gray-700 my-1">
+                Tickets raised by me{" "}
+                <span className={`${getStatusClass(tickets[0].Status)}`}>
+                  {tickets[0].Status}
+                </span>
+              </h6>
 
-            <div className="table-container">
-              <table
-                className={`custom-table ${
-                  selectedTicket ? "selected-table" : ""
-                }`}
-              >
-                <thead>
-                  <tr>
-                    <th>Ticket ID</th>
-                    <th>Type</th>
-                    <th>Query</th>
-                    <th>Status</th>
-                    <th>Desc</th>
-                    <th>Res Desc</th>
-                    <th>Close Desc</th>
-                    <th>Feedback</th>
-                    <th>Date</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {paginatedTickets.map((ticket) => (
-                    <tr
-                      key={ticket.TicketID}
-                      onClick={() => handleTicketClick(ticket)}
-                      className={`cursor-pointer ${
-                        selectedTicket === ticket ? "selected-row" : ""
-                      }`}
-                    >
-                      <td>{ticket.TicketID}</td>
-                      <td>{ticket.TicketType}</td>
-                      <td>{ticket.TicketQuery}</td>
-                      <td>
-                        <span className={getStatusClass(ticket.Status)}>
-                          {ticket.Status}
-                        </span>
-                      </td>
-                      <td>{ticket.Description}</td>
-                      <td>{ticket.ResolutionDescription}</td>
-                      <td>{ticket.CloseDescription ? <>{ticket.CloseDescription}</> :<>Not closed</>}</td>
-                      <td>{ticket.ResolutionFeedback ? <>{ticket.ResolutionFeedback}</> :<>Not Provide</>}</td>
-                      <td>{formatDateTime(ticket.createdAt)}</td>
+              <div className="table-container">
+                <table
+                  className={`custom-table ${
+                    selectedTicket ? "selected-table" : ""
+                  }`}
+                >
+                  <thead>
+                    <tr>
+                      <th>Ticket ID</th>
+                      <th>Type</th>
+                      <th>Query</th>
+                      <th>Status</th>
+                      <th>Desc</th>
+                      <th>Res Desc</th>
+                      <th>Close Desc</th>
+                      <th>Feedback</th>
+                      <th>Date</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-              {renderPaginationButtons(tickets, currentPage, setCurrentPage)}
+                  </thead>
+                  <tbody>
+                    {paginatedTickets.map((ticket) => (
+                      <tr
+                        key={ticket.TicketID}
+                        onClick={() => handleTicketClick(ticket)}
+                        className={`cursor-pointer ${
+                          selectedTicket === ticket ? "selected-row" : ""
+                        }`}
+                      >
+                        <td>{ticket.TicketID}</td>
+                        <td>{ticket.TicketType}</td>
+                        <td>{ticket.TicketQuery}</td>
+                        <td>
+                          <span className={getStatusClass(ticket.Status)}>
+                            {ticket.Status}
+                          </span>
+                        </td>
+                        <td>{ticket.Description}</td>
+                        <td>{ticket.ResolutionDescription}</td>
+                        <td>
+                          {ticket.CloseDescription ? (
+                            <>{ticket.CloseDescription}</>
+                          ) : (
+                            <>Not closed</>
+                          )}
+                        </td>
+                        <td>
+                          {ticket.ResolutionFeedback ? (
+                            <>{ticket.ResolutionFeedback}</>
+                          ) : (
+                            <>Not Provide</>
+                          )}
+                        </td>
+                        <td>{formatDateTime(ticket.createdAt)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+                {renderPaginationButtons(tickets, currentPage, setCurrentPage)}
+              </div>
             </div>
-
-          </div>
-           
           </>
         ) : (
           <h1 className="text-center text-2xl font-bold text-gray-700 my-4">

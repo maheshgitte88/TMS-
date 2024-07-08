@@ -11,7 +11,8 @@ import {
 import { DepSubHierachy } from "../../../reduxToolkit/features/QueryDataSlices";
 import { toast } from "react-toastify";
 import axios from "axios";
-function Resolution({ TicketData , setSelectedTicket }) {
+
+function Resolution({ TicketData, setSelectedTicket }) {
   const socket = useMemo(() => io(`${serverurl}`), []);
 
   const [attchedfiles, setAttchedfiles] = useState(null);
@@ -22,6 +23,10 @@ function Resolution({ TicketData , setSelectedTicket }) {
   const [subDepartments, setSubDepartments] = useState([]);
   const [selectedSubDepartmentId, setSelectedSubDepartmentId] = useState("");
   const [showTransferSection, setShowTransferSection] = useState(false);
+
+  const [queryData, setQueryData] = useState([]);
+  const [querycategory, setQuerycategory] = useState("");
+  const [querySubcategory, setQuerySubcategory] = useState("");
 
   const [attendees, setAttendees] = useState([]);
   const [ccMarksForLead, setCMarkForLead] = useState([]);
@@ -162,7 +167,7 @@ function Resolution({ TicketData , setSelectedTicket }) {
     socket.on("ticketUpdatedReciverd", (data) => {
       console.log("Ticket updated successfully:", data);
       // dispatch(updateForAdminTicket(data));
-      setSelectedTicket(data)
+      setSelectedTicket(data);
       setTimeout(() => {
         dispatch(claimAdminTicketRemoveAfterTF(data));
         // setSelectedTicket()
@@ -202,9 +207,7 @@ function Resolution({ TicketData , setSelectedTicket }) {
   useEffect(() => {
     const fetchAttendees = async () => {
       try {
-        const response = await axios.get(
-          `${serverurl}/api/allEmployess`
-        );
+        const response = await axios.get(`${serverurl}/api/allEmployess`);
         const employees = response.data.Employees.map(
           (employee) => employee.user_Email
         );
@@ -217,8 +220,143 @@ function Resolution({ TicketData , setSelectedTicket }) {
     fetchAttendees();
   }, []);
 
+  useEffect(() => {
+    const fetchQueryData = async () => {
+      try {
+        const response = await axios.get(`${serverurl}/api/fetch-query-data`);
+        setQueryData(response.data.data);
+      } catch (error) {
+        console.error("Error fetching query data:", error);
+      }
+    };
+
+    fetchQueryData();
+  }, []);
+
+  const handleUpdate = async () => {
+    try {
+      const response = await axios.post(
+        `${serverurl}/api/update-category-subcategory`,
+        {
+          TicketID: TicketData.TicketID,
+          querycategory,
+          querySubcategory,
+        }
+      );
+      console.log(response.data, 250);
+
+      if (response.data.success) {
+        // Handle success response
+        console.log(response.data.ticket, 250);
+        setQuerycategory(response.data.ticket.Querycategory);
+        setQuerySubcategory(response.data.ticket.QuerySubcategory);
+
+        // setSelectedTicket(response.data.ticket);
+      }
+    } catch (error) {
+      console.error("Error updating category/subcategory:", error);
+    }
+  };
+
+  const selectedCategory = queryData.find(
+    (category) => category.QueryCategoryName === querycategory
+  );
+
   return (
     <>
+      <div className="flex justify-between space-x-4 mb-2">
+        {TicketData.Querycategory ? (
+          <>
+            <div className="flex-1">
+              <label
+                htmlFor="querycategory"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Category
+              </label>
+              <span className="mt-2 p-1 w-full block border rounded-md focus:outline-none focus:ring focus:border-blue-300">
+                {TicketData.Querycategory}
+              </span>
+            </div>
+            <div className="flex-1">
+              <label
+                htmlFor="querySubcategory"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Subcategory
+              </label>
+              <span className="mt-2 p-1 w-full block border rounded-md focus:outline-none focus:ring focus:border-blue-300">
+                {TicketData.QuerySubcategory}
+              </span>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="flex-1">
+              <label
+                htmlFor="querycategory"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Category
+              </label>
+              <select
+                id="querycategory"
+                name="querycategory"
+                onChange={(e) => setQuerycategory(e.target.value)}
+                value={querycategory}
+                className="mt-1 p-1 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300"
+                required
+              >
+                <option value="">Select Category</option>
+                {queryData.map((category) => (
+                  <option
+                    key={category.QueryCategoryID}
+                    value={category.QueryCategoryName}
+                  >
+                    {category.QueryCategoryName}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="flex-1">
+              <label
+                htmlFor="querySubcategory"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Subcategory
+              </label>
+              <select
+                id="querySubcategory"
+                name="querySubcategory"
+                onChange={(e) => setQuerySubcategory(e.target.value)}
+                value={querySubcategory}
+                className="mt-1 p-1 w-full border rounded-md focus:outline-none focus:ring focus:border-blue-300"
+              >
+                <option value="">Select Subcategory</option>
+                {selectedCategory?.QuerySubcategories.map((subcategory) => (
+                  <option
+                    key={subcategory.QuerySubCategoryID}
+                    value={subcategory.QuerySubcategoryName}
+                  >
+                    {subcategory.QuerySubcategoryName}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="flex-1">
+              <button
+                onClick={handleUpdate}
+                className="mt-6 p-2 bg-blue-500 text-white rounded-md"
+              >
+                Update
+              </button>
+            </div>
+          </>
+        )}
+      </div>
+
       <form onSubmit={handleSubmit}>
         <div className="flex justify-between">
           {decoded.DepartmentID === 2 ? (
@@ -409,7 +547,7 @@ function Resolution({ TicketData , setSelectedTicket }) {
         </div>
         {description.length > 0 ? (
           <>
-            {showTransferSection && selectedSubDepartmentId  ? (
+            {showTransferSection && selectedSubDepartmentId ? (
               <>
                 <button
                   type="submit"
