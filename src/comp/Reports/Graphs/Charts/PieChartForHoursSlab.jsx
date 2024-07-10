@@ -8,8 +8,8 @@ function PieChartForHoursSlab({ tData }) {
       type: "pie",
       marginTop: -5,
       padding:1,
-      width: 400, 
-      height: 200, 
+      // width: 400, 
+      // height: 200, 
     },
     title: {
       text: "Time Slab",
@@ -96,7 +96,7 @@ function PieChartForHoursSlab({ tData }) {
   }, [tData]);
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', height: '220px' }}>
+    <div className="mb-2" style={{ display: 'flex', justifyContent: 'center', height: '150px' }}>
       <HighchartsReact  highcharts={Highcharts} options={options} />
     </div>
   );

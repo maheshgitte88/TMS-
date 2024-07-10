@@ -7,8 +7,8 @@ const BarChartTicketStatus = ({ tData }) => {
     const [options, setOptions] = useState({
         chart: {
           type: 'column', // Use 'column' for vertical bars
-          width: 300, // Set a smaller width for the chart
-          height: 300,
+          // width: 300, // Set a smaller width for the chart
+          // height: 300,
         },
         title: {
           text: 'Ticket Status',
@@ -81,7 +81,7 @@ const BarChartTicketStatus = ({ tData }) => {
   }, [tData]);
 
   return (
-    <div>
+    <div style={{ display: 'flex', justifyContent: 'center', height: '350px' }} >
       <HighchartsReact highcharts={Highcharts} options={options} />
     </div>
   );

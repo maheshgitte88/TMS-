@@ -8,9 +8,15 @@ const UserNpsTable = ({ tData }) => {
   const [options, setOptions] = useState({
     chart: {
       type: "pie",
+      style: {
+        fontSize: '11px',
+      }
     },
     title: {
-      text: "User Feedback Distribution",
+      text: "User Feedback",
+      style: {
+        fontSize: '12px',
+      }
     },
     tooltip: {
       pointFormat:
@@ -87,38 +93,30 @@ const UserNpsTable = ({ tData }) => {
 
   return (
     <div>
-      <div className="flex">
-        <div className="w-1/2 p-4">
-          <h2 className="text-lg font-bold mb-4">Ticket Analysis</h2>
-          <HighchartsReact highcharts={Highcharts} options={options} />
+    <div className="flex mt-1 gap-1">
+      <div className="w-1/2">
+        <p className="text font-bold mb-2">Ticket Analysis</p>
+        <div className="overflow-y-auto" style={{ display: 'flex', justifyContent: 'center', height: '250px' }}>
+          <HighchartsReact  highcharts={Highcharts} options={options} />
         </div>
-        <div className="w-1/2 p-4">
-          <h2 className="text-lg font-bold mb-4">Ticket Details</h2>
+      </div>
+      <div className="w-1/2">
+        <p className="text font-bold mb-2">Ticket Details</p>
+        <div className="h-64 overflow-y-auto">
           <table className="table-auto w-full border-collapse border border-gray-200">
             <thead>
               <tr className="bg-gray-100 border-b border-gray-200">
                 <th className="border-r border-gray-200 px-4 py-2">Name</th>
-                <th className="border-r border-gray-200 px-4 py-2">
-                  NPS Count
-                </th>
-                <th className="border-r border-gray-200 px-4 py-2">
-                  Avg of NPS
-                </th>
+                <th className="border-r border-gray-200 px-4 py-2">NPS Count</th>
+                <th className="border-r border-gray-200 px-4 py-2">Avg of NPS</th>
               </tr>
             </thead>
             <tbody>
               {userData.map((ticket) => (
                 <tr key={ticket.name} className="border-b border-gray-200">
-                  <td className="border-r border-gray-200 px-4 py-2">
-                    {ticket.name}
-                  </td>
-                  <td className="border-r border-gray-200 px-4 py-2">
-                    {ticket.count}
-                  </td>
-                  <td className="border-r border-gray-200 px-4 py-2">
-                    {ticket.averageFeedback}
-                  </td>
-                  {/* Add more cells for other ticket fields */}
+                  <td className="border-r border-gray-200 px-4 py-2">{ticket.name}</td>
+                  <td className="border-r border-gray-200 px-4 py-2">{ticket.count}</td>
+                  <td className="border-r border-gray-200 px-4 py-2">{ticket.averageFeedback}</td>
                 </tr>
               ))}
             </tbody>
@@ -126,6 +124,9 @@ const UserNpsTable = ({ tData }) => {
         </div>
       </div>
     </div>
+  </div>
+  
+
   );
 };
 

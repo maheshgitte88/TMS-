@@ -24,6 +24,8 @@ function Reports() {
   const [tickets, setTickets] = useState([]);
   const [statuses, setStatuses] = useState([]);
   const [locations, setLocations] = useState([]);
+  const [allUsers, setAllUsers] = useState([]);
+  const [users, setUsers] = useState([]);
   const [ticketTypes, setTicketTypes] = useState([]);
   const [queryTypes, setQueryTypes] = useState([]);
   const [idelBechmark, setIdelBechmark] = useState([]);
@@ -55,6 +57,7 @@ function Reports() {
           ticketTypes: ticketTypes.map((t) => t.value),
           queryTypes: queryTypes.map((q) => q.value),
           idelBechmark: idelBechmark.map((x) => x.value),
+          claim_UserName:users.map((x) => x.value)
         },
       })
       .then((response) => {
@@ -78,6 +81,7 @@ function Reports() {
     queryTypes,
     selectedSubDepartments,
     idelBechmark,
+    users
   ]);
 
   useEffect(() => {
@@ -126,6 +130,22 @@ function Reports() {
     };
     calculateAverage(tickets);
   }, [tickets]);
+
+  useEffect(() => {
+    // Extract unique claim_UserName values, excluding null values
+    const uniqueUsers = [
+      ...new Set(tickets.map(ticket => ticket.claim_UserName).filter(userName => userName !== null))
+    ];
+  
+    // Format options for the select component
+    const userOptions = uniqueUsers.map(user => ({
+      value: user,
+      label: user,
+    }));
+  
+    setAllUsers(userOptions);
+  }, [tickets]);
+  
 
   return (
     <div className="container mx-auto p-2">
@@ -251,7 +271,6 @@ function Reports() {
               value={queryTypes}
               onChange={setQueryTypes}
               // menuIsOpen={true}
-
             />
           </div>
 
@@ -270,6 +289,19 @@ function Reports() {
               ]}
               value={idelBechmark}
               onChange={setIdelBechmark}
+              menuIsOpen={true}
+            />
+          </div>
+
+          <div className="mb-2 mt-20 pt-20" style={{marginTop:"190px"}}>
+            <label className="block text-sm font-medium text-gray-700">
+              Select Users
+            </label>
+            <Select
+              isMulti
+              options={allUsers}
+              value={users}
+              onChange={setUsers}
               menuIsOpen={true}
             />
           </div>
