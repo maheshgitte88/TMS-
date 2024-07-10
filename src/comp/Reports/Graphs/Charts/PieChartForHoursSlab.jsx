@@ -6,13 +6,24 @@ function PieChartForHoursSlab({ tData }) {
   const [options, setOptions] = useState({
     chart: {
       type: "pie",
+      marginTop: -5,
+      padding:1,
+      width: 400, 
+      height: 200, 
     },
     title: {
-      text: "Ticket Resolution Time Distribution",
+      text: "Time Slab",
+      style: {
+        fontSize: '10px',
+        fontWeight: 'bold'
+      }
     },
     tooltip: {
       pointFormat:
-        "{series.name}: <b>{point.percentage:.1f}%</b> ({point.count} tickets)",
+        "{series.name}: <b>{point.percentage:.1f}%</b> ({point.count})",
+        style: {
+          fontSize: '12px'
+        }
     },
     accessibility: {
       point: {
@@ -23,11 +34,15 @@ function PieChartForHoursSlab({ tData }) {
       pie: {
         allowPointSelect: true,
         cursor: "pointer",
+        // style:"200px",
         dataLabels: {
           enabled: true,
           format:
-            "<b>{point.name}</b>: {point.percentage:.1f}% ({point.count} tickets)",
+            "<b>{point.name}</b>: {point.percentage:.1f}% ({point.count})",
         },
+        style: {
+          fontSize: '10px'
+        }
       },
     },
     series: [
@@ -46,17 +61,17 @@ function PieChartForHoursSlab({ tData }) {
       const resolutionCounts = tData.reduce((acc, ticket) => {
         let category;
         if (ticket.actualTAT <= 60) {
-          category = "Solved in 1 hour";
+          category = "in 1 hr";
         } else if (ticket.actualTAT <= 120) {
-          category = "Solved in 2 hours";
+          category = "in 2 hr";
         } else if (ticket.actualTAT <= 180) {
-          category = "Solved in 3 hours";
+          category = "in 3 hr";
         } else if (ticket.actualTAT <= 240) {
-          category = "Solved in 4 hours";
+          category = "in 4 hr";
         } else if (ticket.actualTAT <= 300) {
-          category = "Solved in 5 hours";
+          category = "in 5 hr";
         } else {
-          category = "Solved in more than 5 hours";
+          category = "> 5 hr";
         }
         acc[category] = (acc[category] || 0) + 1;
         return acc;
@@ -81,8 +96,8 @@ function PieChartForHoursSlab({ tData }) {
   }, [tData]);
 
   return (
-    <div>
-      <HighchartsReact highcharts={Highcharts} options={options} />
+    <div style={{ display: 'flex', justifyContent: 'center', height: '220px' }}>
+      <HighchartsReact  highcharts={Highcharts} options={options} />
     </div>
   );
 }

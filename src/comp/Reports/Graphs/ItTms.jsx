@@ -13,90 +13,53 @@ export default function ItTms({
   averageActualTAT,
   averageActualTATOrg,
 }) {
-  const getMinutesDifference = (start, end) => {
-    const startDate = new Date(start);
-    const endDate = new Date(end);
-    return (endDate - startDate) / 1000 / 60; // Convert milliseconds to minutes
-  };
-
-  // Function to calculate average TAT
-  const calculateAverageTAT = (tickets) => {
-    const resolvedTickets = tickets.filter(
-      (ticket) => ticket.Resolution_Timestamp !== null
-    );
-
-    if (resolvedTickets.length === 0) {
-      return 0; // No resolved tickets
-    }
-
-    const totalTAT = resolvedTickets.reduce((total, ticket) => {
-      const tat = getMinutesDifference(
-        ticket.createdAt,
-        ticket.Resolution_Timestamp
-      );
-      return total + tat;
-    }, 0);
-
-    return totalTAT / resolvedTickets.length;
-  };
-
-  const calculateActualAverageTAT = (tickets) => {
-    const resolvedTickets = tickets.filter(
-      (ticket) => ticket.Resolution_Timestamp !== null
-    );
-
-    if (resolvedTickets.length === 0) {
-      return 0; // No resolved tickets
-    }
-
-    const totalTAT = resolvedTickets.reduce((total, ticket) => {
-      const Actualtat = ticket.actualTAT;
-      return total + Actualtat;
-    }, 0);
-
-    return totalTAT / resolvedTickets.length;
-  };
-
   return (
     <>
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-        <div
-          className={`bg-red-200 p-5 justify-around rounded shadow cursor-pointer`}
-        >
-          <strong>Total Ticket count</strong>
-          <h5 className="font-semibold">{tData.length}</h5>
-        </div>
+      <div className="flex justify-between gap-1">
+        <div>
+          <div className="flex-1 grid grid-cols-2 sm:grid-cols- lg:grid-cols-3 mb-2 gap-3">
 
-        <div
-          className={`bg-green-200 p-5 flex justify-around rounded shadow cursor-pointer`}
-        >
-          <div>
-            <strong>Avg Actual TAT (min)</strong>
-            <h5 className="font-semibold">{averageActualTAT.toFixed(3)}</h5>
+            <div className="bg-red-200 p-5 justify-around rounded shadow cursor-pointer gap-1">
+              <strong>Total Ticket count</strong>
+              <h6 className="font-bold text-4xl">{tData.length}</h6>
+            </div>
+
+            <div className="bg-green-200 p-5 flex justify-around rounded shadow cursor-pointer gap-1">
+              <div>
+                <strong>Avg Actual TAT (min)</strong>
+                <h5 className="font-semibold text-3xl">
+                  {averageActualTAT.toFixed(3)}
+                </h5>
+              </div>
+            </div>
+
+            <div className="bg-blue-200 p-5 justify-around rounded shadow cursor-pointer gap-1">
+              <div>
+                <strong>Avg of TAT (min)</strong>
+                <h5 className="font-semibold text-3xl">
+                  {averageActualTATOrg.toFixed(3)}
+                </h5>
+              </div>
+            </div>
+
           </div>
+          <PieChart tData={tData} />
         </div>
 
-        <div
-          className={`bg-blue-200 p-5 justify-around rounded shadow cursor-pointer`}
-        >
-          <div>
-            <strong>Avg of TAT (min)</strong>
-            <h5 className="font-semibold">{averageActualTATOrg.toFixed(3)}</h5>
-          </div>
+        <div className="w-1/3">
+          <PieChartForHoursSlab tData={tData} />
+          <BarChartTicketStatus tData={tData} />
         </div>
-
-        <div
-          className={`bg-yellow-200 p-5 flex justify-around rounded shadow cursor-pointer`}
-        ></div>
       </div>
+
       <DrilldownPieChart />
       <PieChart tData={tData} />
-      <PieChartForHoursSlab tData={tData} />
-      
+      {/* <PieChartForHoursSlab tData={tData} /> */}
+
       <UserNpsTable tData={tData} />
-      <BarChartTicketStatus tData={tData} />
-      <UserFeedbackTable tickets={tData}/>
-      <DepthDepBarChart tickets={tData}/>
+      {/* <BarChartTicketStatus tData={tData} /> */}
+      <UserFeedbackTable tickets={tData} />
+      <DepthDepBarChart tickets={tData} />
       <BarChartCateSub tickets={tData} />
     </>
   );

@@ -68,7 +68,6 @@ function Reports() {
 
   useEffect(() => {
     fetchTickets();
-    
   }, [
     statuses,
     startDate,
@@ -78,7 +77,7 @@ function Reports() {
     ticketTypes,
     queryTypes,
     selectedSubDepartments,
-    idelBechmark
+    idelBechmark,
   ]);
 
   useEffect(() => {
@@ -128,13 +127,11 @@ function Reports() {
     calculateAverage(tickets);
   }, [tickets]);
 
-
-
-
   return (
     <div className="container mx-auto p-2">
-      <h1 className="text font-bold mb-1">Ticket System</h1>
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+      {/* <h1 className="text font-bold mb-1">Ticket System</h1> */}
+
+      <div className="grid grid-cols-1 lg:grid-cols-6 gap-2 mb-4">
         <div className="mb-1">
           <label className="block text-sm font-medium text-gray-700">
             Departments
@@ -151,7 +148,7 @@ function Reports() {
         </div>
 
         {subDepartments.length > 1 && (
-          <div className="mb-4">
+          <div className="mb-1">
             <label className="block text-sm font-medium text-gray-700">
               SubDepartments
             </label>
@@ -178,6 +175,7 @@ function Reports() {
             onChange={(e) => setStartDate(e.target.value)}
           />
         </div>
+
         <div className="mb-1">
           <label className="block text-sm font-medium text-gray-700">
             End Date
@@ -205,6 +203,7 @@ function Reports() {
             onChange={setStatuses}
           />
         </div>
+
         <div className="mb-1">
           <label className="block text-sm font-medium text-gray-700">
             Locations
@@ -219,71 +218,86 @@ function Reports() {
             onChange={setLocations}
           />
         </div>
-        <div className="mb-1">
-          <label className="block text-sm font-medium text-gray-700">
-            Ticket Types
-          </label>
-          <Select
-            isMulti
-            options={[
-              { value: "normal", label: "Normal" },
-              { value: "OverNight", label: "OverNight" },
-              { value: "Weekend", label: "Weekend" },
-            ]}
-            value={ticketTypes}
-            onChange={setTicketTypes}
-          />
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-6 gap-2">
+        <div className="mb-1 lg:col-span-1 lg:row-span-4">
+          <div className="mb-10">
+            <label className="block text-sm font-medium text-gray-700">
+              Ticket Types
+            </label>
+            <Select
+              isMulti
+              options={[
+                { value: "normal", label: "Normal" },
+                { value: "OverNight", label: "OverNight" },
+                { value: "Weekend", label: "Weekend" },
+              ]}
+              value={ticketTypes}
+              onChange={setTicketTypes}
+            />
+          </div>
+
+          <div className="mb-10">
+            <label className="block text-sm font-medium text-gray-700">
+              Query Types
+            </label>
+            <Select
+              isMulti
+              options={[
+                { value: "Transaction", label: "Transaction" },
+                { value: "Issue", label: "Issue" },
+              ]}
+              value={queryTypes}
+              onChange={setQueryTypes}
+              // menuIsOpen={true}
+
+            />
+          </div>
+
+          <div className="mb-2">
+            <label className="block text-sm font-medium text-gray-700">
+              Idel Benchmark
+            </label>
+            <Select
+              isMulti
+              options={[
+                { value: "<0 %", label: "<0 %" },
+                { value: "1% to 20%", label: "1% to 20%" },
+                { value: "21% to 50%", label: "21% to 50%" },
+                { value: "51% to 80%", label: "51% to 80%" },
+                { value: "81% to above", label: "81% to above" },
+              ]}
+              value={idelBechmark}
+              onChange={setIdelBechmark}
+              menuIsOpen={true}
+            />
+          </div>
         </div>
-        <div className="mb-1">
-          <label className="block text-sm font-medium text-gray-700">
-            Query Types
-          </label>
-          <Select
-            isMulti
-            options={[
-              { value: "Transaction", label: "Transaction" },
-              { value: "Issue", label: "Issue" },
-            ]}
-            value={queryTypes}
-            onChange={setQueryTypes}
-          />
-        </div>
-        <div className="mb-1">
-          <label className="block text-sm font-medium text-gray-700">
-            Idel Benchmark
-          </label>
-          <Select
-            isMulti
-            options={[
-              { value: "<0 %", label: "<0 %" },
-              { value: "1% to 20%", label: "1% to 20%" },
-              { value: "21% to 50%", label: "21% to 50%" },
-              { value: "51% to 80%", label: "51% to 80%" },
-              { value: "81% to above", label: "81% to above" },
-            ]}
-            value={idelBechmark}
-            onChange={setIdelBechmark}
+
+        <div className="lg:col-span-5 lg:row-span-4">
+          <ItTms
+            tData={tickets}
+            averageActualTAT={averageActualTAT}
+            averageActualTATOrg={averageActualTATOrg}
           />
         </div>
       </div>
-
-      <div className="mx-1 my-1">
-        <ItTms
-          tData={tickets}
-          averageActualTAT={averageActualTAT}
-          averageActualTATOrg={averageActualTATOrg}
-        />
-      </div>
-      <button
-        className="bg-blue-500 text-white px-4 py-2 rounded mr-2"
-        onClick={exportToExcel}
-      >
-       exportToExcel
-      </button>
-
-      <div className="mt-2">{/* <TableData tData={tickets} /> */}</div>
     </div>
   );
 }
 
 export default Reports;
+
+{
+  /* <button
+className="bg-blue-500 text-white px-4 py-2 rounded mr-2"
+onClick={exportToExcel}
+>
+exportToExcel
+</button> */
+}
+
+{
+  /* <div className="mt-2"><TableData tData={tickets} /></div> */
+}

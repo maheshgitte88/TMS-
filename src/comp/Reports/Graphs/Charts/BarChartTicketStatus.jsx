@@ -7,17 +7,29 @@ const BarChartTicketStatus = ({ tData }) => {
     const [options, setOptions] = useState({
         chart: {
           type: 'column', // Use 'column' for vertical bars
+          width: 300, // Set a smaller width for the chart
+          height: 300,
         },
         title: {
-          text: 'Ticket Status Distribution',
+          text: 'Ticket Status',
+          style: {
+            fontSize: '12px',
+            fontWeight: 'bold'
+          }
         },
         xAxis: {
           categories: ['Resolved', 'Closed', 'Pending'], // Adjust as per your ticket statuses
+          style: {
+            fontSize: '8px',
+          }
         },
         yAxis: {
           title: {
             text: 'Ticket Count',
           },
+          style: {
+            fontSize: '8px',
+          }
         },
         series: [
           {

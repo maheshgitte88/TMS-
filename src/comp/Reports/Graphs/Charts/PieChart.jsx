@@ -11,6 +11,10 @@ const PieChart = ({tData}) => {
     },
     title: {
       text: 'Ticket Categories and Subcategories',
+      style: {
+        fontSize: '12px',
+        fontWeight: 'bold'
+      }
     },
     tooltip: {
       pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b> ({point.count} tickets)',
