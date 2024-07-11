@@ -9,14 +9,14 @@ const UserNpsTable = ({ tData }) => {
     chart: {
       type: "pie",
       style: {
-        fontSize: '11px',
-      }
+        fontSize: "15px",
+      },
     },
     title: {
-      text: "User Feedback",
+      text: "Per User Ticket % with count & NPS",
       style: {
-        fontSize: '12px',
-      }
+        fontSize: "12px",
+      },
     },
     tooltip: {
       pointFormat:
@@ -76,7 +76,23 @@ const UserNpsTable = ({ tData }) => {
             userFeedback[user].totalFeedback / userFeedback[user].totalTickets
           ).toFixed(2) * 10,
       }));
-      setUserData(data);
+
+      const totalCounts = data.reduce(
+        (totals, user) => {
+          totals.count += user.count;
+          totals.totalFeedback += user.averageFeedback;
+          return totals;
+        },
+        { count: 0, totalFeedback: 0 }
+      );
+
+      const totalRow = {
+        name: "Total",
+        count: totalCounts.count,
+        averageFeedback: (totalCounts.totalFeedback / data.length).toFixed(2),
+      };
+
+      setUserData([...data, totalRow]);
       setOptions((prevOptions) => ({
         ...prevOptions,
         series: [
@@ -93,40 +109,60 @@ const UserNpsTable = ({ tData }) => {
 
   return (
     <div>
-    <div className="flex mt-1 gap-1">
-      <div className="w-1/2">
-        <p className="text font-bold mb-2">Ticket Analysis</p>
-        <div className="overflow-y-auto" style={{ display: 'flex', justifyContent: 'center', height: '250px' }}>
-          <HighchartsReact  highcharts={Highcharts} options={options} />
-        </div>
-      </div>
-      <div className="w-1/2">
-        <p className="text font-bold mb-2">Ticket Details</p>
-        <div className="h-64 overflow-y-auto">
-          <table className="table-auto w-full border-collapse border border-gray-200">
-            <thead>
-              <tr className="bg-gray-100 border-b border-gray-200">
-                <th className="border-r border-gray-200 px-4 py-2">Name</th>
-                <th className="border-r border-gray-200 px-4 py-2">NPS Count</th>
-                <th className="border-r border-gray-200 px-4 py-2">Avg of NPS</th>
-              </tr>
-            </thead>
-            <tbody>
-              {userData.map((ticket) => (
-                <tr key={ticket.name} className="border-b border-gray-200">
-                  <td className="border-r border-gray-200 px-4 py-2">{ticket.name}</td>
-                  <td className="border-r border-gray-200 px-4 py-2">{ticket.count}</td>
-                  <td className="border-r border-gray-200 px-4 py-2">{ticket.averageFeedback}</td>
+      <div className="flex mt-1 gap-1">
+        <div className="w-1/2">
+          {/* <p className="text-xs font-bold mb-2">Ticket Details</p> */}
+          <div className="h-64 overflow-y-auto">
+            <table className="table-auto bg-slate-50 w-full border-collapse border border-gray-200 text-xs">
+              <thead>
+                <tr className="border-b border-gray-200 bg-red-200">
+                  <th className="border-r border-gray-200 px-1 py-1">Name</th>
+                  <th className="border-r border-gray-200 px-1 py-1">
+                    NPS Count
+                  </th>
+                  <th className="border-r border-gray-200 px-1 py-1">
+                    Avg of NPS
+                  </th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {userData.map((ticket, index) => (
+                  <tr
+                    key={index}
+                    className={`border-b border-gray-200 text-center  ${
+                      ticket.name === "Total" ? "font-bold" : ""
+                    }`}
+                  >
+                    <td className="border-r border-gray-200 px-1 py-1">
+                      {ticket.name}
+                    </td>
+                    <td className="border-r border-gray-200 px-1 py-1">
+                      {ticket.count}
+                    </td>
+                    <td className="border-r border-gray-200 px-1 py-1">
+                      {ticket.averageFeedback}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div className="w-1/2">
+          {/* <p className="text-xs font-bold mb-2">Ticket Analysis</p> */}
+          <div
+            className="overflow-y-auto"
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              height: "250px",
+            }}
+          >
+            <HighchartsReact highcharts={Highcharts} options={options} />
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  
-
   );
 };
 

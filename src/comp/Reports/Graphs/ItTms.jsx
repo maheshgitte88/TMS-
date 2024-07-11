@@ -7,6 +7,9 @@ import BarChartTicketStatus from "./Charts/BarChartTicketStatus";
 import UserFeedbackTable from "./Charts/UserFeedbackTable";
 import DepthDepBarChart from "./Charts/DepthDepBarChart";
 import BarChartCateSub from "./Charts/BarChartCateSub";
+import UserNpsDiffTable from "./Charts/UserNpsDiffTable";
+import SemiCircleChart from "./Charts/SemiCircleChart";
+import DepthCatSubCat from "./Charts/DepthCatSubCat";
 
 export default function ItTms({
   tData,
@@ -34,7 +37,7 @@ export default function ItTms({
 
             <div className="bg-blue-200 p-5 flex justify-around rounded shadow cursor-pointer gap-1">
               <div>
-                <strong>Avg of TAT (min)</strong>
+                <strong>Avg of TAT (max)</strong>
                 <h5 className="font-semibold text-3xl">
                   {averageActualTATOrg.toFixed(3)}
                 </h5>
@@ -45,29 +48,38 @@ export default function ItTms({
         </div>
 
         <div className="w-1/3">
-          <PieChartForHoursSlab tData={tData} />
+          <PieChartForHoursSlab tData={tData} length={"150px"} />
           <BarChartTicketStatus tData={tData} />
         </div>
       </div>
       <UserNpsTable tData={tData} />
       <div className="flex justify-between gap-2">
-        <div className="w-1/3 pt-5">
-             <PieChartForHoursSlab tData={tData} />
+        <div className="w-1/3">
+          <PieChartForHoursSlab tData={tData} length={"175px"} />
         </div>
         <div className="w-2/3">
           <UserFeedbackTable tickets={tData} />
         </div>
       </div>
 
+      <UserNpsDiffTable tickets={tData} />
+      {/* <DepthCatSubCat tickets={tData} /> */}
+{/* 
+      <div className="flex justify-between gap-2">
+        <div className="w-1/2">
+          <DepthDepBarChart tickets={tData} />
+        </div>
+        <div className="w-1/2">
+          <BarChartCateSub tickets={tData} />
+        </div>
+      </div> */}
+
       {/* <DrilldownPieChart /> */}
       {/* <PieChart tData={tData} /> */}
       {/* <PieChartForHoursSlab tData={tData} /> */}
       {/* <BarChartTicketStatus tData={tData} /> */}
 
- 
-      <UserFeedbackTable tickets={tData} />
-      <DepthDepBarChart tickets={tData} />
-      <BarChartCateSub tickets={tData} />
+      {/* <UserFeedbackTable tickets={tData} /> */}
     </>
   );
 }

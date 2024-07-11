@@ -53,9 +53,14 @@ const DepthDepBarChart = ({ tickets }) => {
         setChartOptions({
           chart: {
             type: 'column',
+         
           },
           title: {
             text: 'Ticket Counts by Department and Sub-Department',
+            style: {
+              fontSize: '12px',
+              fontWeight: 'bold'
+            }
           },
           xAxis: {
             type: 'category',

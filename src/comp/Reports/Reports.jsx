@@ -4,6 +4,8 @@ import Select from "react-select";
 import { utils, writeFile } from "xlsx";
 import TableData from "./TableData";
 import ItTms from "./Graphs/ItTms";
+import DepthDepBarChart from "./Graphs/Charts/DepthDepBarChart";
+import DepthCatSubCat from "./Graphs/Charts/DepthCatSubCat";
 
 function Reports() {
   const today = new Date();
@@ -57,7 +59,7 @@ function Reports() {
           ticketTypes: ticketTypes.map((t) => t.value),
           queryTypes: queryTypes.map((q) => q.value),
           idelBechmark: idelBechmark.map((x) => x.value),
-          claim_UserName:users.map((x) => x.value)
+          claim_UserName: users.map((x) => x.value),
         },
       })
       .then((response) => {
@@ -81,7 +83,7 @@ function Reports() {
     queryTypes,
     selectedSubDepartments,
     idelBechmark,
-    users
+    users,
   ]);
 
   useEffect(() => {
@@ -134,21 +136,24 @@ function Reports() {
   useEffect(() => {
     // Extract unique claim_UserName values, excluding null values
     const uniqueUsers = [
-      ...new Set(tickets.map(ticket => ticket.claim_UserName).filter(userName => userName !== null))
+      ...new Set(
+        tickets
+          .map((ticket) => ticket.claim_UserName)
+          .filter((userName) => userName !== null)
+      ),
     ];
-  
+
     // Format options for the select component
-    const userOptions = uniqueUsers.map(user => ({
+    const userOptions = uniqueUsers.map((user) => ({
       value: user,
       label: user,
     }));
-  
+
     setAllUsers(userOptions);
   }, [tickets]);
-  
 
   return (
-    <div className="container mx-auto p-2">
+    <div className="container mx-auto p-1 bg-gray-200">
       {/* <h1 className="text font-bold mb-1">Ticket System</h1> */}
 
       <div className="grid grid-cols-1 lg:grid-cols-6 gap-2 mb-4">
@@ -241,7 +246,7 @@ function Reports() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-6 gap-2">
-        <div className="mb-1 lg:col-span-1 lg:row-span-4">
+        <div className="lg:col-span-1 lg:row-span-4">
           <div className="mb-10">
             <label className="block text-sm font-medium text-gray-700">
               Ticket Types
@@ -293,7 +298,7 @@ function Reports() {
             />
           </div>
 
-          <div className="mb-2 mt-20 pt-20" style={{marginTop:"190px"}}>
+          <div className="mb-2 mt-20 pt-20" style={{ marginTop: "190px" }}>
             <label className="block text-sm font-medium text-gray-700">
               Select Users
             </label>
@@ -305,6 +310,13 @@ function Reports() {
               menuIsOpen={true}
             />
           </div>
+
+
+          <div className="bg-red-200 p-5 flex justify-around rounded shadow cursor-pointer" style={{ marginTop: "395px" }}>
+              <strong>Total Ticket count </strong> <br />
+              <h6 className="font-bold text-4xl">{tickets.length}</h6>
+            </div>
+
         </div>
 
         <div className="lg:col-span-5 lg:row-span-4">
@@ -313,6 +325,17 @@ function Reports() {
             averageActualTAT={averageActualTAT}
             averageActualTATOrg={averageActualTATOrg}
           />
+        </div>
+      </div>
+
+
+      <div className="flex justify-between gap-2">
+        <div className="w-1/3">
+        <DepthDepBarChart tickets={tickets} />
+
+        </div>
+        <div className="w-2/3">
+        <DepthCatSubCat tickets={tickets} />
         </div>
       </div>
     </div>

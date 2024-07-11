@@ -52,9 +52,14 @@ const BarChartCateSub = ({ tickets }) => {
       setChartOptions({
         chart: {
           type: "bar",
+          style: {
+            fontSize: '12px',
+            fontWeight: 'bold'
+          }
         },
         title: {
           text: "Ticket Counts by Query Category and Sub-Category",
+
         },
         xAxis: {
           type: "category",

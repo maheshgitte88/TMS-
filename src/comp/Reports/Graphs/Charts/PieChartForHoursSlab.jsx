@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 
-function PieChartForHoursSlab({ tData }) {
+function PieChartForHoursSlab({ tData, length }) {
   const [options, setOptions] = useState({
     chart: {
       type: "pie",
@@ -96,7 +96,7 @@ function PieChartForHoursSlab({ tData }) {
   }, [tData]);
 
   return (
-    <div className="mb-2" style={{ display: 'flex', justifyContent: 'center', height: '150px' }}>
+    <div className="mb-2" style={{ display: 'flex', justifyContent: 'center', height: `${length}` }}>
       <HighchartsReact  highcharts={Highcharts} options={options} />
     </div>
   );

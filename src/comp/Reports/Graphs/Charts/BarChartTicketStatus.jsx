@@ -6,7 +6,9 @@ import HighchartsReact from 'highcharts-react-official';
 const BarChartTicketStatus = ({ tData }) => {
     const [options, setOptions] = useState({
         chart: {
-          type: 'column', // Use 'column' for vertical bars
+          type: 'column',
+          
+           // Use 'column' for vertical bars
           // width: 300, // Set a smaller width for the chart
           // height: 300,
         },
