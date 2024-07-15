@@ -52,7 +52,10 @@ function App() {
             <Route path="" element={<StudentPro />}></Route>
           </Route>
           <Route path="reports" element={<DashBord />}>
-            <Route path="" element={<Reports />}></Route>
+            <Route path="" element={<Reports />}>
+            
+            </Route>
+
           </Route>
         </Route>
         <Route path="/user" element={<PrivateRoute />}>

@@ -155,6 +155,7 @@ function Reports() {
   return (
     <div className="container mx-auto p-1 bg-gray-200">
       {/* <h1 className="text font-bold mb-1">Ticket System</h1> */}
+      <div className=""></div>
 
       <div className="grid grid-cols-1 lg:grid-cols-6 gap-2 mb-4">
         <div className="mb-1">
@@ -243,10 +244,33 @@ function Reports() {
             onChange={setLocations}
           />
         </div>
+        {!subDepartments.length && (
+          <div className="mb-1">
+            <label className="block text-sm font-medium text-gray-700">
+              Download Data
+            </label>
+            <button
+              className="bg-blue-500 text-white px-4 py-1 rounded mr-2"
+              onClick={exportToExcel}
+            >
+              Export to Excel
+            </button>
+          </div>
+        )}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-6 gap-2">
         <div className="lg:col-span-1 lg:row-span-4">
+          {subDepartments.length > 1 && (
+            <div className="mb-1">
+              <button
+                className="bg-blue-500 text-white px-4 py-2 rounded mr-2"
+                onClick={exportToExcel}
+              >
+                exportToExcel
+              </button>
+            </div>
+          )}
           <div className="mb-10">
             <label className="block text-sm font-medium text-gray-700">
               Ticket Types
@@ -311,12 +335,13 @@ function Reports() {
             />
           </div>
 
-
-          <div className="bg-red-200 p-5 flex justify-around rounded shadow cursor-pointer" style={{ marginTop: "395px" }}>
-              <strong>Total Ticket count </strong> <br />
-              <h6 className="font-bold text-4xl">{tickets.length}</h6>
-            </div>
-
+          <div
+            className="bg-red-200 p-5 flex justify-around rounded shadow cursor-pointer"
+            style={{ marginTop: "395px" }}
+          >
+            <strong>Total Ticket count </strong> <br />
+            <h6 className="font-bold text-4xl">{tickets.length}</h6>
+          </div>
         </div>
 
         <div className="lg:col-span-5 lg:row-span-4">
@@ -328,16 +353,16 @@ function Reports() {
         </div>
       </div>
 
-
       <div className="flex justify-between gap-2">
         <div className="w-1/3">
-        <DepthDepBarChart tickets={tickets} />
-
+          <DepthDepBarChart tickets={tickets} />
         </div>
         <div className="w-2/3">
-        <DepthCatSubCat tickets={tickets} />
+          <DepthCatSubCat tickets={tickets} />
         </div>
       </div>
+
+      <div className="my-4"><TableData tData={tickets} /></div>
     </div>
   );
 }

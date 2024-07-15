@@ -64,7 +64,7 @@ export default function ItTms({
 
       <UserNpsDiffTable tickets={tData} />
       {/* <DepthCatSubCat tickets={tData} /> */}
-{/* 
+      {/* 
       <div className="flex justify-between gap-2">
         <div className="w-1/2">
           <DepthDepBarChart tickets={tData} />
