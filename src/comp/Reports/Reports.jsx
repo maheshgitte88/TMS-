@@ -6,6 +6,7 @@ import TableData from "./TableData";
 import ItTms from "./Graphs/ItTms";
 import DepthDepBarChart from "./Graphs/Charts/DepthDepBarChart";
 import DepthCatSubCat from "./Graphs/Charts/DepthCatSubCat";
+import { serverurl } from "../../exportapp";
 
 function Reports() {
   const today = new Date();
@@ -37,7 +38,7 @@ function Reports() {
   useEffect(() => {
     // Fetch departments on component mount
     axios
-      .get("http://localhost:2000/api/departmentsforreport")
+      .get(`${serverurl}/api/departmentsforreport`)
       .then((response) => {
         setDepartments(response.data);
       })
@@ -48,7 +49,7 @@ function Reports() {
 
   const fetchTickets = () => {
     axios
-      .get("http://localhost:2000/api/reports", {
+      .get(`${serverurl}/api/reports`, {
         params: {
           departmentIds: selectedDepartments.map((d) => d.value),
           subDepartmentIds: selectedSubDepartments.map((d) => d.value),
@@ -362,7 +363,9 @@ function Reports() {
         </div>
       </div>
 
-      <div className="my-4"><TableData tData={tickets} /></div>
+      <div className="my-4">
+        <TableData tData={tickets} />
+      </div>
     </div>
   );
 }
